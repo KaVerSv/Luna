@@ -1,0 +1,20 @@
+.book-panel {
+    display: flex;
+    flex-direction: row;
+}
+
+.book-cover {
+    width: 100px;
+    height: auto;
+}
+
+.book-info {
+    display: flex;
+    flex-direction: column;
+    width: auto;
+}
+
+.column-section {
+    display: flex;
+    flex-direction: column;
+}

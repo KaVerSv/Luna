@@ -1,0 +1,147 @@
+.cart_item_desc {
+    color: #626366;
+    overflow: hidden;
+    padding: 23px 3% 0 3%;
+}
+
+.background {
+    background: rgba(217, 217, 217, 0.20);
+    width: 50%;
+    height: auto;
+    padding-bottom: 40px;
+}
+
+.background h1{
+    font-size: 50px;
+    color: #ffffff;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-decoration: none;
+    margin-left: 50px;
+}
+
+.cart-container {
+    margin-left: 50px;
+}
+
+.cart-item {
+    display: flex;
+    flex-direction: row;
+    background: #3E3647;
+
+    border-radius: 5px;
+    align-items: center;
+    width: 500px;
+}
+
+.cart-item h3 {
+    color: #ffffff;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-decoration: none;
+    margin-left: 10px;
+}
+
+.end p {
+    color: #ffffff;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-decoration: none;
+    margin-left: 10px;
+}
+
+.end {
+    margin-left: auto;
+}
+
+.end p {
+    color: #ffffff;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-decoration: none;
+    margin-left: 10px;
+    margin-right: 10px; /* Dodaj to, aby uzyskać odstęp od lewej i prawej strony */
+}
+
+.item{
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.item a {
+    margin-left: 10px;
+    margin-right: 10px;
+    color: #131313;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.item p {
+    margin-left: 10px;
+    color: #ffffff;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-decoration: none;
+}
+
+.total {
+    margin-top: 50px;
+    display: flex;
+    height: 60px;
+    width: 250px;
+    align-items: center;
+    background: #3E3647;
+    border-radius: 5px;
+}
+
+.total p {
+    margin-left: 10px;
+    color: #ffffff;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-decoration: none;
+}
+
+.total button {
+
+    width: 50px;
+    height: inherit;
+    background: #7da10e;
+    width: auto;
+    padding-right: 15px;
+    cursor: pointer;
+}
+
+.add-to-cart-button {
+    background: #7da10e;
+    width: auto;
+    padding-right: 10px;
+    cursor: pointer;
+    margin-right: 15px;
+    border-radius: 5px;
+    margin-top: 50px;
+}
+
+.add-to-cart-button:hover {
+    background: #6fa720;
+    background: -webkit-linear-gradient( top, #6fa720 5%, #588a1b 95%);
+    background: linear-gradient( to bottom, #6fa720 5%, #588a1b 95%);
+}

@@ -1,0 +1,100 @@
+.book-container {
+    margin: 50px;
+}
+
+.book-container h1{
+    font-size: 70px;
+    color: #ffffff;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-decoration: none;
+}
+
+.background {
+    background: rgba(217, 217, 217, 0.20);
+    width: 50%;
+    height: auto;
+    padding-bottom: 40px;
+}
+
+.about {
+    display: flex;
+}
+
+.about h2{
+    margin: -20px 0 20px 0;
+}
+
+.about p {
+    font-size: 20px;
+    margin-right: 20px;
+    color: #ffffff;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-decoration: none;
+}
+
+#book-reviews:hover::after {
+    content: attr(data-title);
+    display: block;
+    position: absolute;
+    background-color: #6C5885; /* Kolor tła */
+    border: 1px solid #302939; /* Ramka */
+    padding: 5px; /* Odstępy wewnątrz okienka */
+    border-radius: 5px;
+    z-index: 1; /* Na wierzchu innych elementów */
+    white-space: nowrap; /* Nie łam tekst do nowej linii */
+}
+
+.buy-container {
+    display: flex;
+    margin-top: 60px;
+    background-color: #302939;
+    height: 80px;
+    border-radius: 8px;
+    align-items: center;
+    width: fit-content;
+}
+
+.buy-container h2 {
+    margin-left: 30px;
+    white-space: nowrap;
+}
+
+.cart-container {
+    display: flex;
+    background: black;
+    padding: 0 5px 0 10px;
+    border-radius: 8px;
+    margin-left: 100px;
+    margin-top: 50px;
+    margin-right: 20px;
+}
+
+.cart-container p{
+    font-size: 20px;
+    margin-right: 20px;
+    color: #ffffff;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-decoration: none;
+}
+
+.add-to-cart-button {
+    background: #7da10e;
+    width: auto;
+    padding-right: 15px;
+    cursor: pointer;
+}
+
+.add-to-cart-button:hover {
+    background: #6fa720;
+    background: -webkit-linear-gradient( top, #6fa720 5%, #588a1b 95%);
+    background: linear-gradient( to bottom, #6fa720 5%, #588a1b 95%);
+}
