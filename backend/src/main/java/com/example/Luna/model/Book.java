@@ -3,6 +3,7 @@ package com.example.Luna.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -40,4 +41,10 @@ public class Book {
 
     @ManyToMany(mappedBy = "books")
     private Set<User> users;
+
+    @ManyToMany
+    @JoinTable(name = "book_categories",
+            joinColumns = {@JoinColumn( name = "book_id")},
+            inverseJoinColumns = {@JoinColumn(name = "category_id")})
+    private Set<Category> categories = new HashSet<>();
 }

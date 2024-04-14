@@ -39,4 +39,15 @@ public class User {
             inverseJoinColumns = {@JoinColumn(name = "book_id")})
     private Set<Book> books = new HashSet<>();
 
+    @ManyToMany
+    @JoinTable(name = "user_cart",
+            joinColumns = {@JoinColumn( name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "book_id")})
+    private Set<Book> cart = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(name = "user_transactions",
+            joinColumns = {@JoinColumn( name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "transaction_id")})
+    private Set<Transaction> transactions = new HashSet<>();
 }
