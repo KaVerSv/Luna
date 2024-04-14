@@ -50,4 +50,10 @@ public class User {
             joinColumns = {@JoinColumn( name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "transaction_id")})
     private Set<Transaction> transactions = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(name = "user_roles",
+            joinColumns = {@JoinColumn( name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id")})
+    private Set<Role> roles = new HashSet<>();
 }
