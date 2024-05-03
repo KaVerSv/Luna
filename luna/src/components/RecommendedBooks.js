@@ -20,7 +20,7 @@ const RecommendedBooks = ({ books }) => {
     const goToBookPage = () => {
         const currentBookId = books[currentImageIndex].id;
         // Przekieruj do odpowiedniej strony dla książki z danym ID
-        window.location.href = `book_page?id=${currentBookId}`;
+        window.location.href = `BookPage?id=${currentBookId}`;
     };
 
     return (

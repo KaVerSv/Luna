@@ -1,4 +1,4 @@
-package com.example.Luna.model;
+package com.example.Luna.api.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -17,6 +17,4 @@ public class Category {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @ManyToMany(mappedBy = "books")
-    private Set<User> users;
 }

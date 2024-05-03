@@ -1,4 +1,4 @@
-package com.example.Luna.model;
+package com.example.Luna.api.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -17,8 +17,5 @@ public class Transaction {
 
     @Column(name = "purchase_date", nullable = false)
     private LocalDateTime date;
-
-    @ManyToMany(mappedBy = "books")
-    private Set<Book> books;
 
 }

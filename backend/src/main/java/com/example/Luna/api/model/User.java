@@ -1,4 +1,4 @@
-package com.example.Luna.model;
+package com.example.Luna.api.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
