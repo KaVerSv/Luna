@@ -5,7 +5,10 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.JdbcTypeCode;
 
+import java.math.BigDecimal;
+import java.sql.Types;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,7 +19,7 @@ import java.util.Set;
 @Table(name = "books")
 public class Book {
 
-    public Book(Integer id, String title, String author, String publish_date, String description, double price, String image, Integer likes, Integer dislikes) {
+    public Book(Integer id, String title, String author, String publish_date, String description, BigDecimal price, String image, Integer likes, Integer dislikes) {
         this.id = id;
         this.title = title;
         this.author = author;
@@ -42,10 +45,11 @@ public class Book {
     private String publish_date;
 
     @Column(name = "description")
+    @JdbcTypeCode(Types.LONGVARCHAR)
     private String description;
 
     @Column(name = "price")
-    private double price;
+    private BigDecimal price;
 
     @Column(name = "image")
     private String image;
@@ -66,6 +70,4 @@ public class Book {
             inverseJoinColumns = {@JoinColumn(name = "category_id")})
     @JsonIgnoreProperties("books")
     private Set<Category> categories = new HashSet<>();
-
-
 }

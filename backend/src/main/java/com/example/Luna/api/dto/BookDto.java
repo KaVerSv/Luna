@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -15,7 +17,7 @@ public class BookDto {
     private String author;
     private String publish_date;
     private String description;
-    private double price;
+    private BigDecimal price;
     private String image;
     private Integer likes;
     private Integer dislikes;

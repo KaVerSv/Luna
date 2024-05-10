@@ -1,44 +1,45 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import TopBar from '../components/TopBar';
 import Background from '../components/Background';
 import RecommendedBooks from "../components/RecommendedBooks";
 
 const Shop = () => {
+    const [books, setBooks] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
     // Domyślne wartości propsów
     const defaultIsLoggedIn = false;
     const defaultIsAdmin = false;
     const defaultUsername = "KaVer";
 
+    useEffect(() => {
+        const fetchBooks = async () => {
+            try {
+                const response = await axios.get('http://localhost:8080/api/books/featured?name=featured');
+                setBooks(response.data);
+                setLoading(false);
+            } catch (error) {
+                setError(error);
+                setLoading(false);
+            }
+        };
+
+        fetchBooks();
+    }, []);
+
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error.message}</div>;
+
     return (
         <div className="shop">
             <Background background>
                 <TopBar isLoggedIn={defaultIsLoggedIn} isAdmin={defaultIsAdmin} username={defaultUsername} />
-                <RecommendedBooks books={defaultBooks}/>
+                <RecommendedBooks books={books}/>
             </Background>
         </div>
     );
 };
-
-const defaultBooks = [
-    {
-        id: 1,
-        title: "The Mountains of Madness",
-        author: "H.P. Lovecraft",
-        description: "At the Mountains of Madness is a science fiction-horror novella by American author H. P. Lovecraft, written in February/March 1931.",
-        image: "/img/book_images/Mountains_of_Madness.jpg",
-        price: 29.99,
-        oldPrice: 39.99
-    },
-    {
-        id: 2,
-        title: "1984",
-        author: "George Orwell",
-        description: "Nineteen Eighty-Four is a dystopian novel and cautionary tale by English writer George Orwell. It was published on 8 June 1949",
-        image: "/img/book_images/1984.jpg",
-        price: 19.99,
-        oldPrice: 24.99
-    },
-
-];
 
 export default Shop;

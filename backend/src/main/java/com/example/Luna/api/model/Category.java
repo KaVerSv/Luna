@@ -3,8 +3,6 @@ package com.example.Luna.api.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 
-import java.util.Set;
-
 @Getter
 @Entity
 @Table(name = "categories")

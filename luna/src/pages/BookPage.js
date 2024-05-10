@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useLocation } from 'react-router-dom'; // Importujemy hook useLocation z react-router-dom
 import TopBar from '../components/TopBar';
 import Background from '../components/Background';
 import BookDetails from "../components/BookDetails";
@@ -9,27 +11,46 @@ const BookPage = () => {
     const defaultIsAdmin = false;
     const defaultUsername = "KaVer";
 
-    // Definicja domyślnej książki
-    const defaultBook = {
-        id: 1,
-        title: "The Mountains of Madness",
-        author: "H.P. Lovecraft",
-        description: "At the Mountains of Madness is a science fiction-horror novella by American author H. P. Lovecraft, written in February/March 1931.",
-        image: "/img/book_images/Mountains_of_Madness.jpg",
-        price: 29.99,
-        oldPrice: 39.99,
-        likes: 2000,
-        dislikes: 20
-    };
+    // Stan dla danych książki
+    const [book, setBook] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    // Pobieranie parametrów adresu URL
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const bookId = searchParams.get('id');
+
+    useEffect(() => {
+        const fetchBook = async () => {
+            try {
+                const response = await axios.get(`http://localhost:8080/api/books/${bookId}`);
+                setBook(response.data);
+                setLoading(false);
+            } catch (error) {
+                setError(error);
+                setLoading(false);
+            }
+        };
+
+        if (bookId) {
+            fetchBook();
+        } else {
+            setLoading(false);
+        }
+    }, [bookId]);
+
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error.message}</div>;
 
     return (
         <div className="shop">
             <Background background>
                 <TopBar isLoggedIn={defaultIsLoggedIn} isAdmin={defaultIsAdmin} username={defaultUsername} />
-                <BookDetails book={defaultBook}/>
+                <BookDetails book={book}/>
             </Background>
         </div>
     );
-
 };
-    export default BookPage;
+
+export default BookPage;

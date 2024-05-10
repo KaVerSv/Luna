@@ -2,9 +2,6 @@ package com.example.Luna.api.mapper;
 
 import com.example.Luna.api.dto.BookDto;
 import com.example.Luna.api.model.Book;
-import com.example.Luna.api.model.User;
-
-import java.util.Set;
 
 public class BookMapper {
 

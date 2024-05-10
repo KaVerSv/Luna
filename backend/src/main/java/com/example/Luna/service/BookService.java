@@ -12,4 +12,6 @@ public interface BookService {
     BookDto getBookById(int bookId);
 
     List<BookDto> getAllBooks();
+
+    List<BookDto> getFeaturedBooks(String name);
 }

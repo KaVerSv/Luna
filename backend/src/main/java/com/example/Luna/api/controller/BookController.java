@@ -32,10 +32,15 @@ public class BookController {
         return ResponseEntity.ok(bookDto);
     }
 
-    // Build het all books REST API
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<BookDto>> getAllBooks() {
         List<BookDto> books = bookService.getAllBooks();
+        return ResponseEntity.ok(books);
+    }
+
+    @GetMapping("/featured")
+    public ResponseEntity<List<BookDto>> getFeaturedBooks(@RequestParam("name") String name) {
+        List<BookDto> books = bookService.getFeaturedBooks(name);
         return ResponseEntity.ok(books);
     }
 }
