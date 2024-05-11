@@ -2,7 +2,6 @@
 package com.example.Luna.api.controller;
 
 import com.example.Luna.api.dto.BookDto;
-import com.example.Luna.repository.BookRepository;
 import com.example.Luna.service.BookService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;

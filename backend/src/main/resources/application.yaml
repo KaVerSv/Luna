@@ -1,0 +1,8 @@
+application:
+  security:
+    jwt:
+      # node -e "console.log(require('crypto').randomBytes(128).toString('hex'))"
+      secret-key: 60e865ab550cc9812f2d3b199a35e117a1ff01c26d103938f5719d074abba04843caa4f65ee2cdb6881e148f4d39bdd601823ae663f933d89ab03519b2caa1788555f361081b6737ada032cacfb13e2246e54ad8eaefc11f94fc5bae9ab7810cfc802d67972802f475d5def77537f86170b900b6e956a9a8fe0c82930a6816b6
+      expiration: 86400000 # a day
+      refresh-token:
+        expiration: 604800000 # 7 days
