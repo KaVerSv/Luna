@@ -1,4 +1,4 @@
-package com.example.Luna.api.dto;
+package com.example.Luna.security.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,12 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthenticationRequest {
+public class RegisterRequest {
+    private String name;
+    private String surname;
+    private String username;
+    private String phone;
     private String email;
     private String password;
+
 }

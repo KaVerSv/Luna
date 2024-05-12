@@ -1,11 +1,11 @@
-package com.example.Luna.api.controller;
+package com.example.Luna.security.auth;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import com.example.Luna.api.dto.AuthenticationRequest;
-import com.example.Luna.api.dto.AuthenticationResponse;
-import com.example.Luna.api.dto.RegisterRequest;
+import com.example.Luna.security.auth.AuthenticationRequest;
+import com.example.Luna.security.auth.AuthenticationResponse;
+import com.example.Luna.security.auth.RegisterRequest;
 import com.example.Luna.security.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

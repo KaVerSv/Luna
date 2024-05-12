@@ -1,4 +1,4 @@
-package com.example.Luna.api.dto;
+package com.example.Luna.security.auth;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

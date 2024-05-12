@@ -3,9 +3,9 @@ package com.example.Luna.security.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import com.example.Luna.api.dto.AuthenticationRequest;
-import com.example.Luna.api.dto.AuthenticationResponse;
-import com.example.Luna.api.dto.RegisterRequest;
+import com.example.Luna.security.auth.AuthenticationRequest;
+import com.example.Luna.security.auth.AuthenticationResponse;
+import com.example.Luna.security.auth.RegisterRequest;
 import com.example.Luna.api.model.Role;
 import com.example.Luna.api.model.User;
 import com.example.Luna.repository.RoleRepository;
@@ -37,8 +37,10 @@ public class AuthenticationService {
     public AuthenticationResponse register(RegisterRequest request) {
         var user = User.builder()
                 .name(request.getName())
+                .username(request.getUsername())
                 .surname(request.getSurname())
                 .email(request.getEmail())
+                .phone(request.getPhone())
                 .roles(new HashSet<>())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .build();
