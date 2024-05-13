@@ -8,11 +8,14 @@ const Shop = () => {
     const [books, setBooks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
+    const [username, setUsername] = useState(null);
+    /*
     // Domyślne wartości propsów
     const defaultIsLoggedIn = false;
     const defaultIsAdmin = false;
     const defaultUsername = "KaVer";
+    */
+
 
     useEffect(() => {
         const fetchBooks = async () => {
@@ -35,7 +38,7 @@ const Shop = () => {
     return (
         <div className="shop">
             <Background background>
-                <TopBar isLoggedIn={defaultIsLoggedIn} isAdmin={defaultIsAdmin} username={defaultUsername} />
+                <TopBar username={username} />
                 <RecommendedBooks books={books}/>
             </Background>
         </div>

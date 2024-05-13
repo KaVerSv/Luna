@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+@Data
 @Getter
 @Entity
 @Table(name = "users")
@@ -30,7 +31,7 @@ public class User implements UserDetails{
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "username", nullable = false)
+    @Column(name = "username", unique = true, nullable = false)
     private String username;
 
     @Column(name = "name", nullable = false)

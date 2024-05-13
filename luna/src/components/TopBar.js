@@ -1,14 +1,16 @@
 import React, { useContext } from 'react';
 import "../css/style.css"
 
-const TopBar = ({ isLoggedIn, isAdmin, username }) => {
+const TopBar = ({username }) => {
+    let isAdmin = false;
+
     return (
         <div className="upper-border">
             <div className="top-buttons">
                 <img className="resize2" src="/img/logo_luna_cut.png" alt="Logo"/>
                 <a href="shop" className="button"> shop </a>
                 <a href="library" className="button"> library </a>
-                {isLoggedIn ? (
+                {username ? (
                     <div className="user-menu">
                         <a href="#" className="button">{username}</a>
                         <div className="logout-menu">
