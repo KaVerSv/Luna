@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useLocation } from 'react-router-dom'; // Importujemy hook useLocation z react-router-dom
+import { useLocation } from 'react-router-dom';
 import TopBar from '../components/TopBar';
 import Background from '../components/Background';
 import BookDetails from "../components/BookDetails";

@@ -9,6 +9,15 @@ import TopBar from "../components/TopBar";
 const Cart = () => {
     const [books, setBooks] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
+    const [loading, setLoading] = useState(true);
+
+    const calculateTotalPrice = () => {
+        let total = 0.0;
+        books.forEach(book => {
+            total += parseFloat(book.price);
+        });
+        setTotalPrice(total);
+    };
 
     useEffect(() => {
         fetchCartData();
@@ -16,27 +25,23 @@ const Cart = () => {
 
     const fetchCartData = async () => {
         try {
-            const response = await axios.get('/api/v1/user/cart?id=8', { headers: authHeader() }); // Załóżmy, że API endpoint to '/api/cart'
-            const cartData = response.data;
-            setBooks(cartData.books);
-            calculateTotalPrice(cartData.books);
+            const response = await axios.get('http://localhost:8080/api/v1/cart', { headers: authHeader() });
+            setBooks(response.data);
+            calculateTotalPrice();
+            setLoading(false);
         } catch (error) {
             console.error('Error fetching cart data:', error);
         }
     };
 
-    const calculateTotalPrice = (cartBooks) => {
-        let total = 0;
-        cartBooks.forEach(book => {
-            total += parseFloat(book.price);
-        });
-        setTotalPrice(total);
-    };
+    if (loading) {
+        return <p>Loading...</p>;
+    }
 
     const handleDelete = async (bookId) => {
         try {
-            await axios.delete(`/api/cart/${bookId}`); // usuwanie z koszyka  przez DELETE request na '/api/cart/:bookId'
-            fetchCartData(); //refresh after del
+            await axios.delete('http://localhost:8080/api/v1/cart${bookId}',{ headers: authHeader() });
+            await fetchCartData();
         } catch (error) {
             console.error('Error deleting book from cart:', error);
         }
@@ -58,12 +63,12 @@ const Cart = () => {
                                 books.map(book => (
                                     <div className="item" key={book.id}>
                                         <div className="cart-item">
-                                            <a href={`/book_page?id=${book.id}`}><h3>{book.title}</h3></a>
+                                            <a href={"http://localhost:3000/BookPage?id=" + book.id}><h3>{book.title}</h3></a>
                                             <div className="end">
                                                 <p>Price: {book.price} zł</p>
                                             </div>
                                         </div>
-                                        <button onClick={() => handleDelete(book.id)}>Delete</button>
+                                        <button onClick={() => handleDelete(book.id)}>remove</button>
                                     </div>
                                 ))
                             ) : (

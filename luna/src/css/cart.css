@@ -23,15 +23,21 @@
 }
 
 .cart-container {
-    margin-left: 50px;
+    flex-direction: column;
+    display: flex;
+    margin: 40px;
+    padding: 20px;
+    justify-content: center;
+    align-content: center;
 }
 
 .cart-item {
     display: flex;
     flex-direction: row;
     background: #3E3647;
+    margin-right: 10px;
 
-    border-radius: 5px;
+    border-radius: 10px;
     align-items: center;
     width: 500px;
 }

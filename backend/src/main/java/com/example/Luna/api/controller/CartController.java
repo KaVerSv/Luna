@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -35,5 +36,11 @@ public class CartController {
     @ResponseStatus(HttpStatus.OK)
     public void removeFromCart(@NonNull HttpServletRequest request, @PathVariable("id") int bookId) {
         cartService.removeFromCart(request, bookId);
+    }
+
+    @GetMapping("/price")
+    public ResponseEntity<BigDecimal> getTotalPrice(@NonNull HttpServletRequest request) {
+        BigDecimal totalPrice = cartService.getTotalPrice(request);
+        return ResponseEntity.ok(totalPrice);
     }
 }

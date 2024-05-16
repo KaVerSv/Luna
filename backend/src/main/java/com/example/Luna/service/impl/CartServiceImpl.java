@@ -78,11 +78,9 @@ public class CartServiceImpl implements CartService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new IllegalArgumentException("User not found with username: " + username));
 
-        BigDecimal totalPrice = user.getCart().stream()
+        return user.getCart().stream()
                 .map(Book::getPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-
-        return totalPrice;
     }
 
     private String decodeUsername(String authHeader) {
