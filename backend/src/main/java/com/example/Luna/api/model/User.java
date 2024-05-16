@@ -2,6 +2,7 @@ package com.example.Luna.api.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -61,7 +62,7 @@ public class User implements UserDetails{
             inverseJoinColumns = {@JoinColumn(name = "transaction_id")})
     private Set<Transaction> transactions = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
             joinColumns = {@JoinColumn( name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id")})
@@ -103,4 +104,5 @@ public class User implements UserDetails{
     public boolean isEnabled() {
         return true;
     }
+
 }

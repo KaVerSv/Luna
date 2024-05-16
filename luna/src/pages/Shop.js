@@ -9,13 +9,6 @@ const Shop = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [username, setUsername] = useState(null);
-    /*
-    // Domyślne wartości propsów
-    const defaultIsLoggedIn = false;
-    const defaultIsAdmin = false;
-    const defaultUsername = "KaVer";
-    */
-
 
     useEffect(() => {
         const fetchBooks = async () => {

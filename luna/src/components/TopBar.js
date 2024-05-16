@@ -1,8 +1,29 @@
-import React, { useContext } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import "../css/style.css"
+import jwt_decode, {jwtDecode} from 'jwt-decode';
+import axios from "axios";
 
-const TopBar = ({username }) => {
+const TopBar = () => {
     let isAdmin = false;
+    const [username, setUsername] = useState('');
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchUsername = async () => {
+            try {
+                const response = await axios.get('http://localhost:8080/api/v1/user/username');
+                setUsername(response.data);
+                setLoading(false);
+            } catch (error) {
+                setError(error);
+                setLoading(false);
+            }
+        };
+
+        fetchUsername();
+    }, []);
+
 
     return (
         <div className="upper-border">
@@ -25,7 +46,7 @@ const TopBar = ({username }) => {
                 )}
                 <a href="cart" className="button">
                     <div>
-                        koszyk
+                        cart
                         <img className="cart" src="/img/cart-shopping-white.svg" alt="SVG Button"/>
                     </div>
                 </a>
