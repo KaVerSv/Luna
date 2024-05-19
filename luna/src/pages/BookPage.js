@@ -6,17 +6,13 @@ import Background from '../components/Background';
 import BookDetails from "../components/BookDetails";
 
 const BookPage = () => {
-    // Domyślne wartości
-    const defaultIsLoggedIn = false;
-    const defaultIsAdmin = false;
-    const defaultUsername = "KaVer";
+    const [username, setUsername] = useState(null);
 
-    // Stan dla danych książki
     const [book, setBook] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // Pobieranie parametrów adresu URL
+    //get selected book id
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const bookId = searchParams.get('id');
@@ -46,7 +42,7 @@ const BookPage = () => {
     return (
         <div className="shop">
             <Background background>
-                <TopBar isLoggedIn={defaultIsLoggedIn} isAdmin={defaultIsAdmin} username={defaultUsername} />
+                <TopBar isLoggedIn={username}/>
                 <BookDetails book={book}/>
             </Background>
         </div>

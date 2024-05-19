@@ -3,7 +3,7 @@ import axios from 'axios';
 import '../css/style.css';
 import '../css/cart.css';
 import Background from "../components/Background";
-import authHeader from '../services/auth-header';
+import authHeader from '../services/authHeader';
 import TopBar from "../components/TopBar";
 
 const Cart = () => {
@@ -21,6 +21,7 @@ const Cart = () => {
 
     useEffect(() => {
         fetchCartData();
+
     }, []);
 
     const fetchCartData = async () => {
@@ -40,7 +41,7 @@ const Cart = () => {
 
     const handleDelete = async (bookId) => {
         try {
-            await axios.delete('http://localhost:8080/api/v1/cart${bookId}',{ headers: authHeader() });
+            await axios.delete('http://localhost:8080/api/v1/cart/' + bookId,{ headers: authHeader() });
             await fetchCartData();
         } catch (error) {
             console.error('Error deleting book from cart:', error);
@@ -68,7 +69,7 @@ const Cart = () => {
                                                 <p>Price: {book.price} zł</p>
                                             </div>
                                         </div>
-                                        <button onClick={() => handleDelete(book.id)}>remove</button>
+                                        <button onClick={() => handleDelete(book.id)} className="delete-button">remove</button>
                                     </div>
                                 ))
                             ) : (

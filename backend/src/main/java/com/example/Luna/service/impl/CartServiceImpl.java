@@ -1,6 +1,7 @@
 package com.example.Luna.service.impl;
 
 import com.example.Luna.api.dto.BookDto;
+import com.example.Luna.api.exception.ItemAlreadyInCartException;
 import com.example.Luna.api.mapper.BookMapper;
 import com.example.Luna.api.model.Book;
 import com.example.Luna.api.model.User;
@@ -10,7 +11,9 @@ import com.example.Luna.security.service.JwtService;
 import com.example.Luna.service.CartService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
+import org.apache.tomcat.util.http.parser.Authorization;
 import org.springframework.lang.NonNull;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -50,7 +53,7 @@ public class CartServiceImpl implements CartService {
                 .orElseThrow(()-> new IllegalArgumentException("Book not found with id: " + id));
 
         if(user.getCart().contains(book)) {
-            throw new IllegalArgumentException("Book already in cart");
+            throw new ItemAlreadyInCartException("Book already in cart");
         }
 
         user.getCart().add(book);

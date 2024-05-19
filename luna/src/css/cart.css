@@ -127,18 +127,32 @@
 }
 
 .total button {
-
-    width: 50px;
+    width: auto;
     height: inherit;
     background: #7da10e;
-    width: auto;
-    padding-right: 15px;
+
+    padding-right: 10px;
     cursor: pointer;
+
+    color: #ffffff;
+    font-size: 25px;
+
+}
+
+.delete-button {
+    background: #3E3647;
+    cursor: pointer;
+    height: 40px;
+    color: #ffffff;
+    font-family: Calibri;
+    font-size: 18px;
+    padding-right: 8px;
 }
 
 .add-to-cart-button {
+    display: flex;
     background: #7da10e;
-    width: auto;
+
     padding-right: 10px;
     cursor: pointer;
     margin-right: 15px;

@@ -1,8 +1,8 @@
 import React, {useContext, useEffect, useState} from 'react';
 import "../css/style.css"
 import axios from "axios";
-import authService from "../services/auth.service";
-import authHeader from "../services/auth-header";
+import authService from "../services/authService";
+import authHeader from "../services/authHeader";
 
 const TopBar = () => {
     let isAdmin = false;

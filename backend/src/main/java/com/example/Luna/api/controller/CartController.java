@@ -1,6 +1,8 @@
 package com.example.Luna.api.controller;
 
 import com.example.Luna.api.dto.BookDto;
+import com.example.Luna.api.exception.ItemAlreadyInCartException;
+import com.example.Luna.security.auth.AuthenticationRequest;
 import com.example.Luna.service.CartService;
 import com.example.Luna.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -28,14 +31,20 @@ public class CartController {
 
     @PostMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void addToCart(@NonNull HttpServletRequest request, @PathVariable("id") int bookId) {
-        cartService.addToCart(request, bookId);
+    public ResponseEntity<String> addToCart(@NonNull HttpServletRequest request, @PathVariable("id") int bookId) {
+        try {
+            cartService.addToCart(request, bookId);
+        } catch (ItemAlreadyInCartException e) {
+            throw new ItemAlreadyInCartException("Item already in cart");
+        }
+        return ResponseEntity.ok("book added successfully");
     }
 
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void removeFromCart(@NonNull HttpServletRequest request, @PathVariable("id") int bookId) {
+    public ResponseEntity<String> removeFromCart(@NonNull HttpServletRequest request, @PathVariable("id") int bookId) {
         cartService.removeFromCart(request, bookId);
+        return ResponseEntity.ok("book deleted successfully");
     }
 
     @GetMapping("/price")
