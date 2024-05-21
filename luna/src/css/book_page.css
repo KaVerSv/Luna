@@ -21,6 +21,7 @@
 
 .about {
     display: flex;
+    margin: 5px;
 }
 
 .about h2{
@@ -38,6 +39,21 @@
     text-decoration: none;
 }
 
+.about h1 {
+    font-size: 20px;
+    margin-right: 20px;
+    color: #ffffff;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-decoration: none;
+}
+
+.book-info {
+    margin: 10px 0 0 10px;
+}
+
 #book-reviews:hover::after {
     content: attr(data-title);
     display: block;
@@ -52,6 +68,7 @@
 
 .buy-container {
     display: flex;
+    flex-direction: row;
     margin-top: 60px;
     background-color: #302939;
     height: 80px;
@@ -65,17 +82,17 @@
     white-space: nowrap;
 }
 
-.cart-container {
+.cart-container2 {
     display: flex;
+    flex-direction: row;
+    align-items: center;
     background: black;
-    padding: 0 5px 0 10px;
+    padding: 5px 10px;
     border-radius: 8px;
-    margin-left: 100px;
-    margin-top: 50px;
-    margin-right: 20px;
+    margin: 50px 20px 0 50px;
 }
 
-.cart-container p{
+.cart-container2 p{
     font-size: 20px;
     margin-right: 20px;
     color: #ffffff;
@@ -86,14 +103,13 @@
     text-decoration: none;
 }
 
-.add-to-cart-button {
+.add-to-cart-button2 {
     background: #7da10e;
-    width: auto;
-    padding-right: 15px;
+    width: fit-content;
     cursor: pointer;
 }
 
-.add-to-cart-button:hover {
+.add-to-cart-button2:hover {
     background: #6fa720;
     background: -webkit-linear-gradient( top, #6fa720 5%, #588a1b 95%);
     background: linear-gradient( to bottom, #6fa720 5%, #588a1b 95%);

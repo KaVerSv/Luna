@@ -6,6 +6,7 @@ import Register from "./pages/Register";
 import RecoverPassword from "./pages/RecoverPassword";
 import BookPage from "./pages/BookPage";
 import Cart from "./pages/Cart";
+import Library from "./pages/Library";
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
                 <Route path="/PasswordRecovery" element={<RecoverPassword />} />
                 <Route path="/BookPage" element={<BookPage/>} />
                 <Route path="/cart" element={<Cart/>} />
+                <Route path="/Library" element={<Library/>} />
             </Routes>
         </Router>
     );

@@ -44,14 +44,23 @@ const BookDetails = ({ book }) => {
         }
     };
 
+    const checkForLogin = () => {
+        if(localStorage.getItem("user") === null) {
+            navigate("/login");
+        }
+        const fetchUsername = async () => {
+            try {
+                const response = await axios.get('http://localhost:8080/api/v1/user/username',{ headers: authHeader() });
+            } catch (error) {
+                navigate("/login");
+            }
+        };
+        fetchUsername();
+    }
+
     const handleAddToCart = async (e) => {
         e.preventDefault();
-
-        const user = AuthService.getCurrentUser();
-
-        if (user === null) {
-            navigate('/login');
-        }
+        checkForLogin();
 
         try {
             const response = await axios.post(
@@ -76,15 +85,13 @@ const BookDetails = ({ book }) => {
             <ToastContainer />
             <div className="background">
                 <div className="book-container">
-                    <h1 id="book-title">{book.title}</h1>
 
                     <div className="about">
                         <img className="img-resize image-container" src={book.image} alt="Book Cover" />
                         <div className="book-info">
                             <h2>{book.title}</h2>
                             <h2>{book.author}</h2>
-                            <p>{book.published}</p>
-
+                            <p>Published: {book.publish_date}</p>
                             <p>{book.description}</p>
                         </div>
                     </div>
@@ -92,11 +99,11 @@ const BookDetails = ({ book }) => {
                     <div className="buy-container">
                         <h2>Buy {book.title}</h2>
 
-                        <div className="cart-container">
+                        <div className="cart-container2">
                             <p>{book.price} zł</p>
                             <form onSubmit={handleAddToCart}>
                                 <input type="hidden" name="bookId" value={book.id}/>
-                                <input type="submit" value="Add to Cart" className="add-to-cart-button"/>
+                                <input type="submit" value="Add to Cart" className="add-to-cart-button2"/>
                             </form>
                         </div>
                     </div>

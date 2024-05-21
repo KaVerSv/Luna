@@ -24,6 +24,7 @@ body {
     padding: 30px;
     display: flex;
     justify-content: center;
+    justify-content: center;
 }
 
 .shop-container {
@@ -380,13 +381,6 @@ label {
     height: inherit;
     display: flex;
     margin-top: 80px;
-}
-
-.user-books-container {
-    width: 340px;
-    height: inherit;
-    margin-right: 10px;
-    background: #302939;
 }
 
 .book-panel-container {

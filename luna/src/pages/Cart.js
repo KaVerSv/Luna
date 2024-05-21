@@ -5,30 +5,35 @@ import '../css/cart.css';
 import Background from "../components/Background";
 import authHeader from '../services/authHeader';
 import TopBar from "../components/TopBar";
+import {useNavigate} from "react-router-dom";
 
 const Cart = () => {
     const [books, setBooks] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
     const [loading, setLoading] = useState(true);
-
-    const calculateTotalPrice = () => {
-        let total = 0.0;
-        books.forEach(book => {
-            total += parseFloat(book.price);
-        });
-        setTotalPrice(total);
-    };
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetchCartData();
-
+        if(localStorage.getItem("user") === null) {
+            navigate("/login");
+        }
+        const fetchUsername = async () => {
+            try {
+                const response = await axios.get('http://localhost:8080/api/v1/user/username',{ headers: authHeader() });
+            } catch (error) {
+                navigate("/login");
+            }
+        };
+        fetchUsername();
     }, []);
 
     const fetchCartData = async () => {
         try {
             const response = await axios.get('http://localhost:8080/api/v1/cart', { headers: authHeader() });
             setBooks(response.data);
-            calculateTotalPrice();
+            const resp = await axios.get('http://localhost:8080/api/v1/cart/price',{ headers: authHeader()});
+            setTotalPrice(resp.data);
             setLoading(false);
         } catch (error) {
             console.error('Error fetching cart data:', error);

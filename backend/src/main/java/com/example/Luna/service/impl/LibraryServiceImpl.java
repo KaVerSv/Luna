@@ -6,6 +6,7 @@ import com.example.Luna.api.model.User;
 import com.example.Luna.repository.BookRepository;
 import com.example.Luna.repository.UserRepository;
 import com.example.Luna.security.service.JwtService;
+import com.example.Luna.service.LibraryService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.lang.NonNull;
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-public class LibraryServiceImpl {
+public class LibraryServiceImpl implements LibraryService {
 
     private BookRepository bookRepository;
     private UserRepository userRepository;

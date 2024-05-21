@@ -52,7 +52,7 @@ const TopBar = () => {
                         </div>
                     </div>
                 ) : (
-                    <a href="login" className="button">log in</a>
+                    <a href="login" className="button">Log in</a>
                 )}
                 {isAdmin && (
                     <a href="discounts" className="button"> discounts </a>
