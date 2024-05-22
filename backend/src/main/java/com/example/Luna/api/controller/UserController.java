@@ -1,14 +1,12 @@
 package com.example.Luna.api.controller;
 
-import com.example.Luna.api.dto.BookDto;
 import com.example.Luna.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -23,4 +21,22 @@ public class UserController {
         return ResponseEntity.ok(username);
     }
 
+    @GetMapping("/wishList/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Boolean> onWishList(@NonNull HttpServletRequest request, @PathVariable("id") Integer id) {
+        Boolean response = userService.isBookInWishlist(request,id);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/wishList/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void addToWishList(@NonNull HttpServletRequest request, @PathVariable("id") Integer id) {
+        userService.addToWishList(request, id);
+    }
+
+    @DeleteMapping("/wishList/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void removeFromWishList(@NonNull HttpServletRequest request, @PathVariable("id") Integer id) {
+        userService.removeFromWishList(request, id);
+    }
 }

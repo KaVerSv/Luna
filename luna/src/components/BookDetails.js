@@ -3,15 +3,25 @@ import axios from 'axios';
 import "../css/style.css";
 import "../css/book_page.css";
 import authHeader from '../services/authHeader';
-import AuthService from '../services/authService';
 import {useNavigate} from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const BookDetails = ({ book }) => {
+const BookDetails = ({ book, username }) => {
     const [positivePercentage, setPositivePercentage] = useState(0);
     const [totalVotes, setTotalVotes] = useState(0);
     const navigate = useNavigate();
+    const [onWishList, setOnWishList] = useState(false);
+
+    const fetchWishList = async () => {
+        try {
+            const response = await axios.get(`http://localhost:8080/api/v1/user/wishList/${book.id}`,{ headers: authHeader() });
+            setOnWishList(response.data);
+
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     useEffect(() => {
         const calculatePercentage = () => {
@@ -23,8 +33,9 @@ const BookDetails = ({ book }) => {
             setTotalVotes(total);
         };
 
+        fetchWishList();
         calculatePercentage();
-    }, [book.likes, book.dislikes]);
+    }, [book.likes, book.dislikes, book.id]);
 
     const getCategory = (percentage) => {
         if (percentage >= 90) {
@@ -45,16 +56,17 @@ const BookDetails = ({ book }) => {
     };
 
     const checkForLogin = () => {
-        if(localStorage.getItem("user") === null) {
-            navigate("/login");
-        }
         const fetchUsername = async () => {
             try {
                 const response = await axios.get('http://localhost:8080/api/v1/user/username',{ headers: authHeader() });
             } catch (error) {
-                navigate("/login");
+                navigate("/Login");
             }
         };
+
+        if(localStorage.getItem("user") === null) {
+            navigate("/Login");
+        }
         fetchUsername();
     }
 
@@ -80,6 +92,50 @@ const BookDetails = ({ book }) => {
         }
     };
 
+    const handleAddToWishList = async (e) => {
+        e.preventDefault();
+        checkForLogin();
+
+        try {
+            const response = await axios.post(
+                `http://localhost:8080/api/v1/user/wishList/${book.id}`,
+                {},
+                { headers: authHeader() }
+            );
+            console.log('Book added to WishList:', response.data);
+            toast.success('Book added to Wish List successfully!');
+        } catch (error) {
+            if (error.response && error.response.status === 409) {
+                toast.error('Book already in Wish List');
+            } else {
+                toast.error('Failed to add book to Wish List.');
+            }
+            console.error('Error adding book to Wish List:', error);
+        }
+        fetchWishList();
+    };
+
+    const handleRemoveFromWishList = async (e) => {
+        e.preventDefault();
+        checkForLogin();
+
+        try {
+            const response = await axios.delete(
+                `http://localhost:8080/api/v1/user/wishList/${book.id}`, { headers: authHeader() }
+            );
+            console.log('Book added to WishList:', response.data);
+            toast.success('Book removed from Wish List!');
+        } catch (error) {
+            if (error.response && error.response.status === 409) {
+                toast.error('Book not on Wish List');
+            } else {
+                toast.error('Failed to remove book from Wish List.');
+            }
+            console.error('Error removing book from Wish List:', error);
+        }
+        fetchWishList();
+    };
+
     return (
         <div className="context-container">
             <ToastContainer />
@@ -87,7 +143,7 @@ const BookDetails = ({ book }) => {
                 <div className="book-container">
 
                     <div className="about">
-                        <img className="img-resize image-container" src={book.image} alt="Book Cover" />
+                        <img className="img-resize image-container" src={book.image} alt="Book Cover"/>
                         <div className="book-info">
                             <h2>{book.title}</h2>
                             <h2>{book.author}</h2>
@@ -105,6 +161,28 @@ const BookDetails = ({ book }) => {
                                 <input type="hidden" name="bookId" value={book.id}/>
                                 <input type="submit" value="Add to Cart" className="add-to-cart-button2"/>
                             </form>
+                        </div>
+                    </div>
+                    <div className="buy-container">
+                        <div className="wish-list">
+
+                            {username === null ? (
+                                onWishList !== null && onWishList ? (
+                                    <form onSubmit={handleRemoveFromWishList}>
+                                        <input type="hidden" name="bookId" value={book.id}/>
+                                        <input type="submit" value="On Wish List" className="add-to-cart-button2"/>
+                                    </form>
+                                ) : (
+                                    <form onSubmit={handleAddToWishList}>
+                                        <input type="hidden" name="bookId" value={book.id}/>
+                                        <input type="submit" value="Add to Wish List" className="add-to-cart-button2"/>
+                                    </form>
+                                )
+                            ) : (
+                                <form onSubmit={checkForLogin}>
+                                    <input type="submit" value="Add to Wish List" className="add-to-cart-button2"/>
+                                </form>
+                            )}
                         </div>
                     </div>
                 </div>

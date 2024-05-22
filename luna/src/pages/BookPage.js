@@ -43,7 +43,7 @@ const BookPage = () => {
         <div className="shop">
             <Background background>
                 <TopBar isLoggedIn={username}/>
-                <BookDetails book={book}/>
+                <BookDetails book={book} username={username}/>
             </Background>
         </div>
     );

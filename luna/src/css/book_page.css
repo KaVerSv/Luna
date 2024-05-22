@@ -114,3 +114,7 @@
     background: -webkit-linear-gradient( top, #6fa720 5%, #588a1b 95%);
     background: linear-gradient( to bottom, #6fa720 5%, #588a1b 95%);
 }
+
+.wish-list {
+    margin: 10px;
+}

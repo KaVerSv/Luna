@@ -68,6 +68,12 @@ public class User implements UserDetails{
             inverseJoinColumns = {@JoinColumn(name = "role_id")})
     private Set<Role> roles = new HashSet<>();
 
+    @ManyToMany
+    @JoinTable(name = "user_wish_list",
+            joinColumns = {@JoinColumn( name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "book_id")})
+    private Set<Book> wishList = new HashSet<>();
+
     public void addRole(Role role) {
         roles.add(role);
         role.getUsers().add(this);

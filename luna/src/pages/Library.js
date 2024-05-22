@@ -71,9 +71,9 @@ const Library = () => {
                                              alt="Book Cover"/>
                                     </div>
                                     <div className="book-info2">
-                                        <h1>Title: {selectedBook.title}</h1>
+                                        <h1>{selectedBook.title}</h1>
                                         <p>Author: {selectedBook.author}</p>
-                                        <p>Publish Date: {selectedBook.published}</p>
+                                        <p>Publish Date: {selectedBook.publish_date}</p>
                                         <p>Description: {selectedBook.description}</p>
                                     </div>
                                 </div>

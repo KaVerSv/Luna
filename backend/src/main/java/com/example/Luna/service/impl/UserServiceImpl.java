@@ -30,29 +30,45 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUser(@NonNull HttpServletRequest request) {
         String username = decodeUsername(request.getHeader("Authorization"));
-
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new IllegalArgumentException("User not found with username: " + username));
-
         return user;
     }
 
     @Override
     public String getUsername(@NonNull HttpServletRequest request) {
-        String username = decodeUsername(request.getHeader("Authorization"));
-
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new IllegalArgumentException("User not found with username: " + username));
-
+        User user = getUser(request);
+        if (user == null)
+            throw new IllegalArgumentException("User not found");
         return user.getUsername();
     }
 
-    private String decodeUsername(String authHeader) {
-        final String jwt;
-
-        jwt = authHeader.substring(7);
-        return jwtService.extractUsername(jwt);
+    @Override
+    public Boolean isBookInWishlist(@NonNull HttpServletRequest request, Integer bookId) {
+        User user = getUser(request);
+        return user.getWishList().stream().anyMatch(book -> book.getId().equals(bookId));
     }
 
+    @Override
+    public void addToWishList(@NonNull HttpServletRequest request, Integer bookId) {
+        User user = getUser(request);
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new IllegalArgumentException("Book not found with id: " + bookId));
+        user.getWishList().add(book);
+        userRepository.save(user);
+    }
 
+    @Override
+    public void removeFromWishList(@NonNull HttpServletRequest request, Integer bookId) {
+        User user = getUser(request);
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new IllegalArgumentException("Book not found with id: " + bookId));
+        user.getWishList().remove(book);
+        userRepository.save(user);
+    }
+
+    private String decodeUsername(String authHeader) {
+        final String jwt = authHeader.substring(7);
+        return jwtService.extractUsername(jwt);
+    }
 }

@@ -12,4 +12,7 @@ import java.util.List;
 public interface UserService {
     public User getUser(@NonNull HttpServletRequest request);
     public String getUsername(@NonNull HttpServletRequest request);
+    Boolean isBookInWishlist(@NonNull HttpServletRequest request, Integer bookId);
+    public void addToWishList(@NonNull HttpServletRequest request, Integer bookId);
+    public void removeFromWishList(@NonNull HttpServletRequest request, Integer bookId);
 }
