@@ -94,7 +94,6 @@
 
 .cart-container2 p{
     font-size: 20px;
-    margin-right: 20px;
     color: #ffffff;
     font-family: Inter;
     font-style: normal;
@@ -117,4 +116,47 @@
 
 .wish-list {
     margin: 10px;
+}
+
+.discount-box-container {
+    width: fit-content;
+    height: 60px;
+    margin: 0;
+    padding: 0 10px;
+    border-radius: inherit;
+    background: #6fa720;
+}
+
+.price-container-box {
+    margin: 0 12px;
+    height: inherit;
+    background: inherit;
+    cursor: default;
+}
+
+.price-container-box h6{
+    color: gray;
+    margin: 0;
+    background: inherit;
+    cursor: default;
+    text-decoration: line-through;
+    font-size: 20px;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.price-container-box p{
+    color: white;
+    margin: 0;
+    background: inherit;
+    cursor: default;
+
+    font-size: 20px;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-decoration: none;
 }

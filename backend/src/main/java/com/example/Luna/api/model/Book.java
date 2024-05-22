@@ -70,4 +70,11 @@ public class Book {
             inverseJoinColumns = {@JoinColumn(name = "category_id")})
     @JsonIgnoreProperties("books")
     private Set<Category> categories = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(name = "book_discounts",
+        joinColumns = {@JoinColumn( name = "book_id")},
+        inverseJoinColumns = {@JoinColumn(name = "discount_id")})
+    @JsonIgnoreProperties("books")
+    private Set<Discount> discounts = new HashSet<>();
 }

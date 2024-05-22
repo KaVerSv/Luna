@@ -7,11 +7,12 @@ import {useNavigate} from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const BookDetails = ({ book, username }) => {
+const BookDetails = ({ book, username, discount }) => {
     const [positivePercentage, setPositivePercentage] = useState(0);
     const [totalVotes, setTotalVotes] = useState(0);
     const navigate = useNavigate();
     const [onWishList, setOnWishList] = useState(false);
+    const [discountPrice, setDiscountPrice] = useState(null);
 
     const fetchWishList = async () => {
         try {
@@ -35,6 +36,11 @@ const BookDetails = ({ book, username }) => {
 
         fetchWishList();
         calculatePercentage();
+
+        if (discount !== null) {
+            const calculatedDiscountPrice = book.price - (discount.percentage * book.price) / 100;
+            setDiscountPrice(calculatedDiscountPrice.toFixed(2));
+        }
     }, [book.likes, book.dislikes, book.id]);
 
     const getCategory = (percentage) => {
@@ -154,14 +160,31 @@ const BookDetails = ({ book, username }) => {
 
                     <div className="buy-container">
                         <h2>Buy {book.title}</h2>
-
-                        <div className="cart-container2">
-                            <p>{book.price} zł</p>
-                            <form onSubmit={handleAddToCart}>
-                                <input type="hidden" name="bookId" value={book.id}/>
-                                <input type="submit" value="Add to Cart" className="add-to-cart-button2"/>
-                            </form>
-                        </div>
+                        {discount === null ? (
+                            <div className="cart-container2">
+                                <div className={"price-container-box"}>
+                                    <p>{book.price} zł</p>
+                                </div>
+                                <form onSubmit={handleAddToCart}>
+                                    <input type="hidden" name="bookId" value={book.id}/>
+                                    <input type="submit" value="Add to Cart" className="add-to-cart-button2"/>
+                                </form>
+                            </div>
+                        ) : (
+                            <div className="cart-container2">
+                                <div className="discount-box-container">
+                                    <p>-{discount.percentage}%</p>
+                                </div>
+                                <div className={"price-container-box"}>
+                                    <h6>{book.price} zł</h6>
+                                    <p>{discountPrice} zł</p>
+                                </div>
+                                <form onSubmit={handleAddToCart}>
+                                    <input type="hidden" name="bookId" value={book.id}/>
+                                    <input type="submit" value="Add to Cart" className="add-to-cart-button2"/>
+                                </form>
+                            </div>
+                        )}
                     </div>
                     <div className="buy-container">
                         <div className="wish-list">
