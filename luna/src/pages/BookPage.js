@@ -7,8 +7,7 @@ import BookDetails from "../components/BookDetails";
 
 const BookPage = () => {
     const [username, setUsername] = useState(null);
-    const [book, setBook] = useState(null);
-    const [discount, setDiscount] = useState(null);
+    const [bookPart, setBookPart] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -18,10 +17,10 @@ const BookPage = () => {
     const bookId = searchParams.get('id');
 
     useEffect(() => {
-        const fetchBook = async () => {
+        const fetchBookPart = async () => {
             try {
                 const response = await axios.get(`http://localhost:8080/api/books/${bookId}`);
-                setBook(response.data);
+                setBookPart(response.data);
                 setLoading(false);
             } catch (error) {
                 setError(error);
@@ -29,19 +28,8 @@ const BookPage = () => {
             }
         };
 
-        const fetchDiscount = async () => {
-            try {
-                const response = await axios.get(`http://localhost:8080/api/discounts/${bookId}`);
-                setDiscount(response.data);
-                setLoading(false);
-            } catch (error) {
-                setLoading(false);
-            }
-        };
-
         if (bookId) {
-            fetchBook();
-            fetchDiscount();
+            fetchBookPart();
         } else {
             setLoading(false);
         }
@@ -54,7 +42,9 @@ const BookPage = () => {
         <div className="shop">
             <Background background>
                 <TopBar isLoggedIn={username}/>
-                <BookDetails book={book} username={username} discount={discount}/>
+                {bookPart.book && (
+                    <BookDetails bookPart={bookPart} username={username} />
+                )}
             </Background>
         </div>
     );

@@ -25,12 +25,13 @@
 }
 
 .price-container {
-    margin-top: -300px;
-    margin-left: 750px;
+    margin-top: -200px;
+    margin-left: 740px;
     display: flex;
     background: #3E3647;
     width: fit-content;
     height: 30px;
+    padding: 2px;
     align-items: center;
     border-radius: 5px;
     cursor: pointer;
@@ -47,8 +48,20 @@
     text-decoration: none;
 }
 
-/* Dodaj styl dla starej ceny */
 .old-price {
-    text-decoration: line-through; /* Przekreślona czcionka dla starej ceny */
-    color: #999; /* Kolor szary dla starej ceny */
+    text-decoration: line-through;
+    color: gray;
+}
+
+.discount-shop-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: inherit;
+    color: white;
+    background: #6fa720;
+    height: inherit;
+    margin-right: 5px;
+    margin-left: -2px;
+    border-radius: inherit;
 }

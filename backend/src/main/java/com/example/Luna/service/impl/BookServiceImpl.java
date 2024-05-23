@@ -36,11 +36,12 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookDto getBookById(int bookId) {
+    public BookWithDiscountDto getBookById(int bookId) {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(()-> new ResourceNotFoundException("Book by id: " + bookId + " not found"));
-
-        return BookMapper.mapToBookDto(book);
+        BookDto bookdto = BookMapper.mapToBookDto(book);
+        DiscountDto discount = discountService.getDiscountByBookId(book.getId());
+        return new BookWithDiscountDto(bookdto, discount);
     }
 
     @Override

@@ -13,7 +13,7 @@ const Shop = () => {
     useEffect(() => {
         const fetchBooks = async () => {
             try {
-                const response = await axios.get('http://localhost:8080/api/books/featured?name=featured');
+                const response = await axios.get('http://localhost:8080/api/books/featuredD?name=featured');
                 setBooks(response.data);
                 setLoading(false);
             } catch (error) {

@@ -18,10 +18,14 @@ const RecommendedBooks = ({ books }) => {
     };
 
     const goToBookPage = () => {
-        const currentBookId = books[currentImageIndex].id;
-        // Przekieruj do odpowiedniej strony dla książki z danym ID
+        const currentBookId = books[currentImageIndex].book.id;
         window.location.href = `BookPage?id=${currentBookId}`;
     };
+
+    const calculateDiscountedPrice = (price, discountPercentage) => {
+        return (price * (1 - discountPercentage / 100)).toFixed(2);
+    };
+
 
     return (
         <div>
@@ -31,11 +35,11 @@ const RecommendedBooks = ({ books }) => {
                 </button>
 
                 <div className="featured" onClick={goToBookPage}>
-                    <img className="img-resize image-container" src={books[currentImageIndex].image} alt="Book Cover" />
+                    <img className="img-resize image-container" src={books[currentImageIndex].book.image} alt="Book Cover" />
                     <div className="book-info">
-                        <h2 id="book-title">{books[currentImageIndex].title}</h2>
-                        <p id="book-author">Author: {books[currentImageIndex].author}</p>
-                        <p id="book-description">{books[currentImageIndex].description}</p>
+                        <h2 id="book-title">{books[currentImageIndex].book.title}</h2>
+                        <p id="book-author">Author: {books[currentImageIndex].book.author}</p>
+                        <p id="book-description">{books[currentImageIndex].book.description}</p>
                     </div>
                 </div>
 
@@ -45,7 +49,7 @@ const RecommendedBooks = ({ books }) => {
             </div>
             <div>
                 <div className="dots-container">
-                    {/* Mapujemy kropki na podstawie ilości książek */}
+                    {/* Mapowanie kropek na podstawie ilości książek */}
                     {books.map((book, index) => (
                         <div key={index} className={`dot ${index === currentImageIndex ? 'active' : ''}`} onClick={() => showImage(index)}></div>
                     ))}
@@ -53,10 +57,17 @@ const RecommendedBooks = ({ books }) => {
             </div>
 
             <div className="center-this-item">
-                <div className="price-container" onClick={goToBookPage}>
-                    <p id="book-old-price" className="old-price">{books[currentImageIndex].oldPrice}</p>
-                    <p id="book-price" className="price">{books[currentImageIndex].price}</p>
-                </div>
+                {books[currentImageIndex].discount === null ? (
+                    <div className="price-container" onClick={goToBookPage}>
+                        <p id="book-price" className="price">{books[currentImageIndex].book.price}</p>
+                    </div>
+                ) : (
+                    <div className="price-container" onClick={goToBookPage}>
+                        <p id="discount-shop-box" className="discount-shop-box">-{books[currentImageIndex].discount.percentage}%</p>
+                        <p id="old-price" className="old-price">{books[currentImageIndex].book.price}</p>
+                        <p id="book-price" className="price">{calculateDiscountedPrice(books[currentImageIndex].book.price, books[currentImageIndex].discount.percentage)}</p>
+                    </div>
+                )}
             </div>
         </div>
     );

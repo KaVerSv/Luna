@@ -7,7 +7,7 @@ import {useNavigate} from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const BookDetails = ({ book, username, discount }) => {
+const BookDetails = ({ bookPart, username }) => {
     const [positivePercentage, setPositivePercentage] = useState(0);
     const [totalVotes, setTotalVotes] = useState(0);
     const navigate = useNavigate();
@@ -16,9 +16,8 @@ const BookDetails = ({ book, username, discount }) => {
 
     const fetchWishList = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/v1/user/wishList/${book.id}`,{ headers: authHeader() });
+            const response = await axios.get(`http://localhost:8080/api/v1/user/wishList/${bookPart.book.id}`,{ headers: authHeader() });
             setOnWishList(response.data);
-
         } catch (error) {
             console.error(error);
         }
@@ -26,8 +25,8 @@ const BookDetails = ({ book, username, discount }) => {
 
     useEffect(() => {
         const calculatePercentage = () => {
-            const likes = book.likes;
-            const dislikes = book.dislikes;
+            const likes = bookPart.book.likes;
+            const dislikes = bookPart.book.dislikes;
             const total = likes + dislikes;
             const percentage = total > 0 ? Math.round((likes / total) * 100) : 0;
             setPositivePercentage(percentage);
@@ -37,11 +36,11 @@ const BookDetails = ({ book, username, discount }) => {
         fetchWishList();
         calculatePercentage();
 
-        if (discount !== null) {
-            const calculatedDiscountPrice = book.price - (discount.percentage * book.price) / 100;
+        if (bookPart.discount !== null) {
+            const calculatedDiscountPrice = bookPart.book.price - (bookPart.discount.percentage * bookPart.book.price) / 100;
             setDiscountPrice(calculatedDiscountPrice.toFixed(2));
         }
-    }, [book.likes, book.dislikes, book.id]);
+    }, [bookPart.book.likes, bookPart.book.dislikes, bookPart.book.id]);
 
     const getCategory = (percentage) => {
         if (percentage >= 90) {
@@ -82,7 +81,7 @@ const BookDetails = ({ book, username, discount }) => {
 
         try {
             const response = await axios.post(
-                `http://localhost:8080/api/v1/cart/${book.id}`,
+                `http://localhost:8080/api/v1/cart/${bookPart.book.id}`,
                 {},
                 { headers: authHeader() }
             );
@@ -104,7 +103,7 @@ const BookDetails = ({ book, username, discount }) => {
 
         try {
             const response = await axios.post(
-                `http://localhost:8080/api/v1/user/wishList/${book.id}`,
+                `http://localhost:8080/api/v1/user/wishList/${bookPart.book.id}`,
                 {},
                 { headers: authHeader() }
             );
@@ -127,7 +126,7 @@ const BookDetails = ({ book, username, discount }) => {
 
         try {
             const response = await axios.delete(
-                `http://localhost:8080/api/v1/user/wishList/${book.id}`, { headers: authHeader() }
+                `http://localhost:8080/api/v1/user/wishList/${bookPart.book.id}`, { headers: authHeader() }
             );
             console.log('Book added to WishList:', response.data);
             toast.success('Book removed from Wish List!');
@@ -149,38 +148,38 @@ const BookDetails = ({ book, username, discount }) => {
                 <div className="book-container">
 
                     <div className="about">
-                        <img className="img-resize image-container" src={book.image} alt="Book Cover"/>
+                        <img className="img-resize image-container" src={bookPart.book.image} alt="Book Cover"/>
                         <div className="book-info">
-                            <h2>{book.title}</h2>
-                            <h2>{book.author}</h2>
-                            <p>Published: {book.publish_date}</p>
-                            <p>{book.description}</p>
+                            <h2>{bookPart.book.title}</h2>
+                            <h2>{bookPart.book.author}</h2>
+                            <p>Published: {bookPart.book.publish_date}</p>
+                            <p>{bookPart.book.description}</p>
                         </div>
                     </div>
 
                     <div className="buy-container">
-                        <h2>Buy {book.title}</h2>
-                        {discount === null ? (
+                        <h2>Buy {bookPart.book.title}</h2>
+                        {bookPart.discount === null ? (
                             <div className="cart-container2">
                                 <div className={"price-container-box"}>
-                                    <p>{book.price} zł</p>
+                                    <p>{bookPart.book.price} zł</p>
                                 </div>
                                 <form onSubmit={handleAddToCart}>
-                                    <input type="hidden" name="bookId" value={book.id}/>
+                                    <input type="hidden" name="bookId" value={bookPart.book.id}/>
                                     <input type="submit" value="Add to Cart" className="add-to-cart-button2"/>
                                 </form>
                             </div>
                         ) : (
                             <div className="cart-container2">
                                 <div className="discount-box-container">
-                                    <p>-{discount.percentage}%</p>
+                                    <p>-{bookPart.discount.percentage}%</p>
                                 </div>
                                 <div className={"price-container-box"}>
-                                    <h6>{book.price} zł</h6>
+                                    <h6>{bookPart.book.price} zł</h6>
                                     <p>{discountPrice} zł</p>
                                 </div>
                                 <form onSubmit={handleAddToCart}>
-                                    <input type="hidden" name="bookId" value={book.id}/>
+                                    <input type="hidden" name="bookId" value={bookPart.book.id}/>
                                     <input type="submit" value="Add to Cart" className="add-to-cart-button2"/>
                                 </form>
                             </div>
@@ -192,12 +191,12 @@ const BookDetails = ({ book, username, discount }) => {
                             {username === null ? (
                                 onWishList !== null && onWishList ? (
                                     <form onSubmit={handleRemoveFromWishList}>
-                                        <input type="hidden" name="bookId" value={book.id}/>
+                                        <input type="hidden" name="bookId" value={bookPart.book.id}/>
                                         <input type="submit" value="On Wish List" className="add-to-cart-button2"/>
                                     </form>
                                 ) : (
                                     <form onSubmit={handleAddToWishList}>
-                                        <input type="hidden" name="bookId" value={book.id}/>
+                                        <input type="hidden" name="bookId" value={bookPart.book.id}/>
                                         <input type="submit" value="Add to Wish List" className="add-to-cart-button2"/>
                                     </form>
                                 )
