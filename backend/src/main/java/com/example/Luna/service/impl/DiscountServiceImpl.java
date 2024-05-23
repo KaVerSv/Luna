@@ -4,7 +4,6 @@ import com.example.Luna.api.dto.DiscountDto;
 import com.example.Luna.api.exception.ResourceNotFoundException;
 import com.example.Luna.api.mapper.DiscountMapper;
 import com.example.Luna.api.model.Discount;
-import com.example.Luna.repository.BookRepository;
 import com.example.Luna.repository.DiscountRepository;
 import com.example.Luna.service.DiscountService;
 import lombok.AllArgsConstructor;
@@ -21,7 +20,11 @@ public class DiscountServiceImpl implements DiscountService {
     public DiscountDto getDiscountByBookId(int bookId) {
         // Find the latest discount for the given book
         Discount discount = discountRepository.findFirstByBooks_IdOrderByEndDateDesc(bookId)
-                .orElseThrow(() -> new ResourceNotFoundException("Book not on discount"));
+                .orElse(null);
+
+        if (discount == null) {
+            return null;
+        }
 
         // Check if the discount has not ended
         LocalDate localDate = LocalDate.now();

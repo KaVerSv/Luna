@@ -1,6 +1,7 @@
 package com.example.Luna.service;
 
 import com.example.Luna.api.dto.BookDto;
+import com.example.Luna.api.dto.BookWithDiscountDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,4 +15,6 @@ public interface BookService {
     List<BookDto> getAllBooks();
 
     List<BookDto> getFeaturedBooks(String name);
+
+    List<BookWithDiscountDto> getFeaturedBooksAndDiscounts(String name);
 }
