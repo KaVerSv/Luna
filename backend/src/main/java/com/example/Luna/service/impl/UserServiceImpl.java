@@ -1,23 +1,17 @@
 package com.example.Luna.service.impl;
 
-import com.example.Luna.api.dto.BookDto;
-import com.example.Luna.api.mapper.BookMapper;
 import com.example.Luna.api.model.Book;
 import com.example.Luna.api.model.User;
 import com.example.Luna.repository.BookRepository;
 import com.example.Luna.repository.UserRepository;
 import com.example.Luna.security.service.JwtService;
+import com.example.Luna.security.service.RoleEnum;
 import com.example.Luna.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.springframework.lang.NonNull;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -70,5 +64,11 @@ public class UserServiceImpl implements UserService {
     private String decodeUsername(String authHeader) {
         final String jwt = authHeader.substring(7);
         return jwtService.extractUsername(jwt);
+    }
+
+    public Boolean isAdmin(@NonNull HttpServletRequest request) {
+        User user = getUser(request);
+        return user.getRoles().stream()
+                .anyMatch(role -> role.getName().equals(RoleEnum.ROLE_ADMIN.name()));
     }
 }

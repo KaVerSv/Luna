@@ -15,4 +15,5 @@ public interface UserService {
     Boolean isBookInWishlist(@NonNull HttpServletRequest request, Integer bookId);
     public void addToWishList(@NonNull HttpServletRequest request, Integer bookId);
     public void removeFromWishList(@NonNull HttpServletRequest request, Integer bookId);
+    public Boolean isAdmin(@NonNull HttpServletRequest request);
 }

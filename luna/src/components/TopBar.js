@@ -5,7 +5,7 @@ import authService from "../services/authService";
 import authHeader from "../services/authHeader";
 
 const TopBar = () => {
-    let isAdmin = false;
+    const [admin, setAdmin] = useState(false);
     const [username, setUsername] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -17,7 +17,9 @@ const TopBar = () => {
         const fetchUsername = async () => {
             try {
                 const response = await axios.get('http://localhost:8080/api/v1/user/username',config);
+                const response2 = await axios.get('http://localhost:8080/api/v1/user/admin',config);
                 setUsername(response.data);
+                setAdmin(response2.data);
                 setLoading(false);
             } catch (error) {
                 setError(error);
@@ -54,8 +56,8 @@ const TopBar = () => {
                 ) : (
                     <a href="login" className="button">Log in</a>
                 )}
-                {isAdmin && (
-                    <a href="discounts" className="button"> discounts </a>
+                {admin && (
+                    <a href="Discounts" className="button"> Discounts </a>
                 )}
                 <a href="cart" className="button">
                     <div>

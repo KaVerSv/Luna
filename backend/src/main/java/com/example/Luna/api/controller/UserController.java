@@ -39,4 +39,10 @@ public class UserController {
     public void removeFromWishList(@NonNull HttpServletRequest request, @PathVariable("id") Integer id) {
         userService.removeFromWishList(request, id);
     }
+
+    @GetMapping("/admin")
+    public ResponseEntity<Boolean> isAdmin(@NonNull HttpServletRequest request) {
+        Boolean admin =  userService.isAdmin(request);
+        return ResponseEntity.ok(admin);
+    }
 }

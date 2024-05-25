@@ -7,6 +7,8 @@ import RecoverPassword from "./pages/RecoverPassword";
 import BookPage from "./pages/BookPage";
 import Cart from "./pages/Cart";
 import Library from "./pages/Library";
+import Discounts from "./pages/Discounts";
+
 
 
 function App() {
@@ -21,6 +23,7 @@ function App() {
                 <Route path="/BookPage" element={<BookPage/>} />
                 <Route path="/cart" element={<Cart/>} />
                 <Route path="/Library" element={<Library/>} />
+                <Route path="/Discounts" element={<Discounts/>} />
             </Routes>
         </Router>
     );

@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -24,6 +25,7 @@ public class Discount {
         this.percentage = percentage;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.books = new HashSet<>();
     }
 
     @Id
@@ -45,5 +47,5 @@ public class Discount {
 
     @ManyToMany(mappedBy = "discounts")
     @JsonIgnoreProperties("discounts")
-    private Set<Book> books;
+    private Set<Book> books = new HashSet<>();
 }
