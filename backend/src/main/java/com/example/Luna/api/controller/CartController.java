@@ -52,4 +52,10 @@ public class CartController {
         BigDecimal totalPrice = cartService.getTotalPrice(request);
         return ResponseEntity.ok(totalPrice);
     }
+
+    @PostMapping("/buy")
+    public ResponseEntity<String> buy(@NonNull HttpServletRequest request) {
+        cartService.addToLibrary(request);
+        return ResponseEntity.ok("success");
+    }
 }

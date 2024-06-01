@@ -56,6 +56,10 @@ public class CartServiceImpl implements CartService {
             throw new ItemAlreadyInCartException("Book already in cart");
         }
 
+        if(user.getBooks().contains(book)) {
+            throw new ItemAlreadyInCartException("Book already owned");
+        }
+
         user.getCart().add(book);
         userRepository.save(user);
     }
@@ -91,5 +95,16 @@ public class CartServiceImpl implements CartService {
 
         jwt = authHeader.substring(7);
         return jwtService.extractUsername(jwt);
+    }
+
+    public void addToLibrary(@NonNull HttpServletRequest request) {
+        String username = decodeUsername(request.getHeader("Authorization"));
+
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("User not found with username: " + username));
+
+        user.getBooks().addAll(user.getCart());
+        user.getCart().clear();
+        userRepository.save(user);
     }
 }

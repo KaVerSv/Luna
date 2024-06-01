@@ -7,6 +7,5 @@ import org.springframework.lang.NonNull;
 import java.util.List;
 
 public interface LibraryService {
-
-    public List<BookDto> getUserLibrary(@NonNull HttpServletRequest request);
+    List<BookDto> getUserLibrary(@NonNull HttpServletRequest request);
 }

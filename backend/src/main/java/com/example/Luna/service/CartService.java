@@ -2,15 +2,14 @@ package com.example.Luna.service;
 
 import com.example.Luna.api.dto.BookDto;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.lang.NonNull;
-import org.springframework.security.core.Authentication;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 public interface CartService {
-    public List<BookDto> getUserCart(@NonNull HttpServletRequest request);
-    public void addToCart(@NonNull HttpServletRequest request,int id);
-    public void removeFromCart(@NonNull HttpServletRequest request,int id);
-    public BigDecimal getTotalPrice(@NonNull HttpServletRequest request);
+    List<BookDto> getUserCart(HttpServletRequest request);
+    void addToCart(HttpServletRequest request,int id);
+    void removeFromCart(HttpServletRequest request,int id);
+    BigDecimal getTotalPrice(HttpServletRequest request);
+    void addToLibrary(HttpServletRequest request);
 }

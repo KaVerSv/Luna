@@ -53,8 +53,13 @@ const Cart = () => {
         }
     };
 
-    const handleBuy = () => {
-        // Obsługa zakupu
+    const handleBuy = async () => {
+        try {
+            await axios.post('http://localhost:8080/api/v1/cart/buy',{},{ headers: authHeader() });
+            await fetchCartData();
+        } catch (error) {
+            console.error('Error processing transaction:', error);
+        }
     };
 
     return (
