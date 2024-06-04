@@ -14,6 +14,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -75,4 +76,16 @@ public class DiscountServiceImpl implements DiscountService {
         return DiscountMapper.mapToDiscountDto(savedDiscount);
     }
 
+    @Override
+    public List<Book> getBooksOnActiveDiscount(List<Book> books) {
+        List<Book> booksOnActiveDiscount = new ArrayList<>();
+        for (Book book : books) {
+            Discount discount = discountRepository.findFirstByBooks_IdOrderByEndDateDesc(book.getId())
+                    .orElse(null);
+            if (discount != null && !discount.getEndDate().isBefore(LocalDate.now())) {
+                booksOnActiveDiscount.add(book);
+            }
+        }
+        return booksOnActiveDiscount;
+    }
 }
