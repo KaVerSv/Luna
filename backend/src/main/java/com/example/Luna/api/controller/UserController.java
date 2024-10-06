@@ -1,7 +1,6 @@
 package com.example.Luna.api.controller;
 
 import com.example.Luna.api.dto.BookDto;
-import com.example.Luna.service.MessageProducer;
 import com.example.Luna.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
@@ -18,7 +17,6 @@ import java.util.List;
 public class UserController {
 
     private UserService userService;
-    private final MessageProducer messageProducer;
 
     @GetMapping("/username")
     public ResponseEntity<String> getUserCart(@NonNull HttpServletRequest request) {
@@ -49,22 +47,5 @@ public class UserController {
     public ResponseEntity<Boolean> isAdmin(@NonNull HttpServletRequest request) {
         Boolean admin =  userService.isAdmin(request);
         return ResponseEntity.ok(admin);
-    }
-
-    @GetMapping("/wishList")
-    @ResponseStatus(HttpStatus.OK)
-    public List<BookDto> checkWishList(@NonNull HttpServletRequest request) {
-        List<BookDto> books =  userService.checkForActiveDiscountsOnWishList(request);
-        for (BookDto bookDto : books) {
-            messageProducer.sendMessage(bookDto.getTitle() + " Book on you Wish List is on Discount!");
-        }
-        return books;
-    }
-
-    @GetMapping("/send")
-    public String sendMessage() {
-        String message = "Hello World";
-        messageProducer.sendMessage(message);
-        return "Message sent: " + message;
     }
 }
