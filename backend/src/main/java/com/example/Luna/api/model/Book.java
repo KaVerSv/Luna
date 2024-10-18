@@ -60,16 +60,22 @@ public class Book {
     @Column(name = "dislikes")
     private Integer dislikes;
 
+    @Column(name = "user_score")
+    private Integer user_score;
+
+    @Column(name = "num_of_pages")
+    private Integer num_of_pages;
+
     @ManyToMany(mappedBy = "books")
     @JsonIgnoreProperties("books")
     private Set<User> users;
 
     @ManyToMany
-    @JoinTable(name = "book_categories",
+    @JoinTable(name = "book_tags",
             joinColumns = {@JoinColumn( name = "book_id")},
-            inverseJoinColumns = {@JoinColumn(name = "category_id")})
+            inverseJoinColumns = {@JoinColumn(name = "tag_id")})
     @JsonIgnoreProperties("books")
-    private Set<Category> categories = new HashSet<>();
+    private Set<Tag> tags = new HashSet<>();
 
     @ManyToMany
     @JoinTable(name = "book_discounts",
@@ -77,4 +83,11 @@ public class Book {
         inverseJoinColumns = {@JoinColumn(name = "discount_id")})
     @JsonIgnoreProperties("books")
     private Set<Discount> discounts = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(name = "book_languages",
+            joinColumns = {@JoinColumn( name = "book_id")},
+            inverseJoinColumns = {@JoinColumn(name = "language_id")})
+    @JsonIgnoreProperties("books")
+    private Set<Language> languages = new HashSet<>();
 }

@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -48,5 +49,30 @@ public class BookController {
     public ResponseEntity<List<BookWithDiscountDto>> getFeaturedBooksD(@RequestParam("name") String name) {
         List<BookWithDiscountDto> books = bookService.getFeaturedBooksAndDiscounts(name);
         return ResponseEntity.ok(books);
+    }
+
+    //simple search suggestions
+    @GetMapping("search")
+    public ResponseEntity<List<BookWithDiscountDto>> searchBooks(@RequestParam String keyword) {
+        List<BookWithDiscountDto> books = bookService.searchByTitle(keyword);
+        return new ResponseEntity<>(books, HttpStatus.OK);
+    }
+
+    //advanced search
+    @GetMapping("searchAdv")
+    public ResponseEntity<List<BookWithDiscountDto>> searchBooks(
+            @RequestParam String keyword,
+            @RequestParam Integer pageNum,
+            @RequestParam Integer pageSize,
+            @RequestParam(required = false) BigDecimal bottomPriceRange,
+            @RequestParam(required = false) BigDecimal topPriceRange,
+            @RequestParam(required = false) String sortOption,
+            @RequestParam(required = false) Boolean specialOffersOnly,
+            @RequestParam(required = false) List<String> languages,
+            @RequestParam(required = false) List<String> tags) {
+
+        List<BookWithDiscountDto> books = bookService.searchByTitle(keyword,
+                pageNum, pageSize, bottomPriceRange, topPriceRange, sortOption, specialOffersOnly, languages, tags);
+        return new ResponseEntity<>(books, HttpStatus.OK);
     }
 }

@@ -48,4 +48,11 @@ public class UserController {
         Boolean admin =  userService.isAdmin(request);
         return ResponseEntity.ok(admin);
     }
+
+    @GetMapping("/wishList")
+    @ResponseStatus(HttpStatus.OK)
+    public List<BookDto> checkWishList(@NonNull HttpServletRequest request) {
+        List<BookDto> books =  userService.checkForActiveDiscountsOnWishList(request);
+        return books;
+    }
 }

@@ -23,9 +23,10 @@ const TopBar = () => {
                 const response2 = await axios.get('http://localhost:8080/api/v1/user/admin', config);
                 const response3 = await axios.get('http://localhost:8080/api/v1/user/wishList', config);
 
-                setWishListMess(response3.data);
                 setUsername(response.data);
                 setAdmin(response2.data);
+                setWishListMess(response3.data);
+
                 setLoading(false);
 
                 for (const book of response3.data) {
@@ -52,6 +53,22 @@ const TopBar = () => {
             console.error("Error:", error);
         }
     };
+
+    if (loading) {
+        return (
+            <div className="upper-border">
+                <div className="loading">Loading...</div> {/* Loader placeholder */}
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="upper-border">
+                <div className="error-message">Error: {error.message}</div>
+            </div>
+        );
+    }
 
     return (
         <div className="upper-border">
