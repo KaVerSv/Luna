@@ -28,7 +28,7 @@ public class BookController {
 
     // Build get book REST API
     @GetMapping("{id}")
-    public ResponseEntity<BookWithDiscountDto> getBookById(@PathVariable("id") int bookId) {
+    public ResponseEntity<BookWithDiscountDto> getBookById(@PathVariable("id") long bookId) {
         BookWithDiscountDto bookDto = bookService.getBookById(bookId);
         return ResponseEntity.ok(bookDto);
     }

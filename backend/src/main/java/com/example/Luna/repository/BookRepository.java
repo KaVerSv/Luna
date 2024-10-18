@@ -12,7 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface BookRepository extends JpaRepository<Book, Integer> {
-    Optional <Book> findById(int Id);
+    Optional <Book> findById(long Id);
 
     //for suggestions in search
     List<Book> findTop5ByTitleContainingIgnoreCase(String title);

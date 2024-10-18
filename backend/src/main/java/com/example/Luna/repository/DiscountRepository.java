@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface DiscountRepository extends JpaRepository<Discount, Integer> {
-    Optional<Discount> findFirstByBooks_IdOrderByEndDateDesc(int bookId);
+    Optional<Discount> findFirstByBooks_IdOrderByEndDateDesc(long bookId);
 
 
 }

@@ -20,7 +20,7 @@ import java.util.Set;
 @Table(name = "discounts")
 public class Discount {
 
-    public Discount(Integer id, int percentage, LocalDate startDate, LocalDate endDate) {
+    public Discount(Long id, int percentage, LocalDate startDate, LocalDate endDate) {
         this.id = id;
         this.percentage = percentage;
         this.startDate = startDate;
@@ -30,7 +30,7 @@ public class Discount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(name = "percentage", nullable = false)
     @Min(value = 1, message = "Procent przeceny musi być co najmniej 1")

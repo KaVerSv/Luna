@@ -25,7 +25,7 @@ public class DiscountServiceImpl implements DiscountService {
     private final BookRepository bookRepository;
 
     @Override
-    public DiscountDto getDiscountByBookId(int bookId) {
+    public DiscountDto getDiscountByBookId(long bookId) {
         // Find the latest discount for the given book
         Discount discount = discountRepository.findFirstByBooks_IdOrderByEndDateDesc(bookId)
                 .orElse(null);
@@ -62,7 +62,7 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     @Override
-    public DiscountDto createDiscountForBook(int bookId, DiscountDto discountDto) {
+    public DiscountDto createDiscountForBook(long bookId, DiscountDto discountDto) {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found with id: " + bookId));
 

@@ -88,7 +88,7 @@ public class UserServiceImpl implements UserService {
         User user = getUser(request);
         List<Book> lista = discountService.getBooksOnActiveDiscount(new ArrayList<>(user.getWishList()));
         List<BookDto> bookDtos = lista.stream()
-                .map(BookMapper::mapToBookDto)
+                .map(BookDto::new)
                 .collect(Collectors.toList());
 
         return bookDtos;

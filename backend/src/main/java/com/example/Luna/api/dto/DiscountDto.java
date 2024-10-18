@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DiscountDto {
-    private Integer id;
+    private Long id;
     private Integer percentage;
     private LocalDate startDate;
     private LocalDate endDate;

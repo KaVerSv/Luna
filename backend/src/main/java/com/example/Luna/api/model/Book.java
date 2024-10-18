@@ -19,7 +19,7 @@ import java.util.Set;
 @Table(name = "books")
 public class Book {
 
-    public Book(Integer id, String title, String author, String publish_date, String description, BigDecimal price, String image, Integer likes, Integer dislikes) {
+    public Book(Long id, String title, String author, String publish_date, String description, BigDecimal price, String image, Integer likes, Integer dislikes) {
         this.id = id;
         this.title = title;
         this.author = author;
@@ -33,7 +33,7 @@ public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(name = "title", nullable = false)
     private String title;

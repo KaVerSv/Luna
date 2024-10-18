@@ -11,7 +11,7 @@ import java.util.List;
 public interface BookService {
     BookDto createBook(BookDto bookDto);
 
-    BookWithDiscountDto getBookById(int bookId);
+    BookWithDiscountDto getBookById(Long bookId);
 
     List<BookDto> getAllBooks();
 

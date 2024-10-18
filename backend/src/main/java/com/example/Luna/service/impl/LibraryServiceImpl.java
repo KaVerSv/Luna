@@ -31,7 +31,7 @@ public class LibraryServiceImpl implements LibraryService {
                 .orElseThrow(() -> new IllegalArgumentException("User not found with username: " + username));
 
         return user.getBooks().stream()
-                .map(BookMapper::mapToBookDto)
+                .map(BookDto::new)
                 .collect(Collectors.toList());
     }
 

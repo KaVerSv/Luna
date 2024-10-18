@@ -35,14 +35,14 @@ public class BookServiceImpl implements BookService {
     public BookDto createBook(BookDto bookDto) {
         Book book = BookMapper.mapToBook(bookDto);
         Book savedBook = bookRepository.save(book);
-        return BookMapper.mapToBookDto(savedBook);
+        return new BookDto(savedBook);
     }
 
     @Override
-    public BookWithDiscountDto getBookById(int bookId) {
+    public BookWithDiscountDto getBookById(Long bookId) {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(()-> new ResourceNotFoundException("Book by id: " + bookId + " not found"));
-        BookDto bookdto = BookMapper.mapToBookDto(book);
+        BookDto bookdto = new BookDto(book);
         DiscountDto discount = discountService.getDiscountByBookId(book.getId());
         return new BookWithDiscountDto(bookdto, discount);
     }
@@ -50,7 +50,8 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<BookDto> getAllBooks() {
         List<Book> books = bookRepository.findAll();
-        return books.stream().map(BookMapper::mapToBookDto)
+        return books.stream()
+                .map(BookDto::new)
                 .collect(Collectors.toList());
     }
 
@@ -61,7 +62,7 @@ public class BookServiceImpl implements BookService {
 
         Set<Book> books = recommended.getRecommended_tables();
         List<BookDto> bookDtos = books.stream()
-                .map(BookMapper::mapToBookDto)
+                .map(BookDto::new)
                 .collect(Collectors.toList());
 
         return bookDtos;
@@ -74,7 +75,7 @@ public class BookServiceImpl implements BookService {
 
         Set<Book> books = recommended.getRecommended_tables();
         List<BookDto> bookDtos = books.stream()
-                .map(BookMapper::mapToBookDto)
+                .map(BookDto::new)
                 .toList();
 
         return bookDtos.stream().map(book -> {
@@ -87,7 +88,7 @@ public class BookServiceImpl implements BookService {
 
         List<Book> books = bookRepository.findTop5ByTitleContainingIgnoreCase(title);
         List<BookDto> bookDtos = books.stream()
-                .map(BookMapper::mapToBookDto)
+                .map(BookDto::new)
                 .toList();
 
         return bookDtos.stream().map(book -> {
@@ -126,7 +127,7 @@ public class BookServiceImpl implements BookService {
         List<Book> books = bookPage.getContent();
 
         List<BookDto> bookDtos = books.stream()
-                .map(BookMapper::mapToBookDto)
+                .map(BookDto::new)
                 .toList();
 
         List<BookWithDiscountDto> bookWithDiscountDtos = bookDtos.stream().map(book -> {

@@ -37,7 +37,7 @@ public class CartServiceImpl implements CartService {
                 .orElseThrow(() -> new IllegalArgumentException("User not found with username: " + username));
 
         return user.getCart().stream()
-                .map(BookMapper::mapToBookDto)
+                .map(BookDto::new)
                 .collect(Collectors.toList());
     }
 

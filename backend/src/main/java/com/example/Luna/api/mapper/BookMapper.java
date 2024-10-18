@@ -4,7 +4,7 @@ import com.example.Luna.api.dto.BookDto;
 import com.example.Luna.api.model.Book;
 
 public class BookMapper {
-
+/*
     public static BookDto mapToBookDto(Book book) {
         return new BookDto(
                 book.getId(),
@@ -15,10 +15,12 @@ public class BookMapper {
                 book.getPrice(),
                 book.getImage(),
                 book.getLikes(),
-                book.getDislikes()
+                book.getDislikes(),
+                book.getUser_score(),
+                book.getLanguages()
         );
     }
-
+*/
     public static Book mapToBook(BookDto bookDto) {
         return new Book(
                 bookDto.getId(),
