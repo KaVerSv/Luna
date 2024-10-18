@@ -97,20 +97,19 @@ public class BookServiceImpl implements BookService {
         }).collect(Collectors.toList());
     }
 
-    public List<BookWithDiscountDto> searchByTitle(String keyword, Integer pageNum, Integer pageSize, BigDecimal bottomPriceRange,
-                                                   BigDecimal topPriceRange, String sortOption, Boolean specialOffersOnly, List<String> languages,
-                                                   List<String> tags) throws IllegalArgumentException{
+    public List<BookWithDiscountDto> searchByTitle(String keyword, Integer pageNum, Integer pageSize,
+                                                   BigDecimal bottomPriceRange, BigDecimal topPriceRange,
+                                                   String sortOption, Boolean specialOffersOnly,
+                                                   List<String> languages, List<String> tags) {
 
+        // Ustalanie sortowania
         Pageable pageable;
-
-        //sorting options
         switch (sortOption) {
-            case "priceAsc" -> {pageable = PageRequest.of(pageNum, pageSize, Sort.by("price").ascending());}
-            case "priceDesc" -> {pageable = PageRequest.of(pageNum, pageSize, Sort.by("price").descending());}
-            case "releaseDate" -> {pageable = PageRequest.of(pageNum, pageSize, Sort.by("publish_date").descending());}
-            case "userScore" -> {pageable = PageRequest.of(pageNum, pageSize, Sort.by("user_score").descending());}
-            case null -> {pageable = PageRequest.of(pageNum, pageSize);}
-            default -> throw new IllegalArgumentException("invalid sorting option");
+            case "priceAsc" -> pageable = PageRequest.of(pageNum, pageSize, Sort.by("price").ascending());
+            case "priceDesc" -> pageable = PageRequest.of(pageNum, pageSize, Sort.by("price").descending());
+            case "releaseDate" -> pageable = PageRequest.of(pageNum, pageSize, Sort.by("publish_date").descending());
+            case "userScore" -> pageable = PageRequest.of(pageNum, pageSize, Sort.by("user_score").descending());
+            case null, default -> pageable = PageRequest.of(pageNum, pageSize);
         }
 
         // Ustalanie zakresu cen
@@ -118,23 +117,29 @@ public class BookServiceImpl implements BookService {
         BigDecimal maxPrice = topPriceRange != null ? topPriceRange : new BigDecimal(Double.MAX_VALUE);
 
         // Wyszukiwanie książek z rabatem lub bez
-        Page<Book> bookPage = (specialOffersOnly)
-                ? bookRepository.findByTitleContainingIgnoreCaseAndDiscountedPriceBetweenWithDiscountsAndLanguagesAndTags(
-                keyword, minPrice, maxPrice, languages, tags, pageable)
-                : bookRepository.findByTitleContainingIgnoreCaseAndDiscountedPriceBetweenAndLanguagesAndTags(
-                keyword, minPrice, maxPrice, languages, tags, pageable);
+        Page<Book> bookPage;
+        if (Boolean.TRUE.equals(specialOffersOnly)) {
+            bookPage = bookRepository.findByTitleContainingIgnoreCaseAndDiscountedPriceBetweenWithDiscountsAndLanguagesAndTags(
+                    keyword, minPrice, maxPrice, languages, tags, pageable);
+        } else {
+            bookPage = bookRepository.findByTitleContainingIgnoreCaseAndDiscountedPriceBetweenAndLanguagesAndTags(
+                    keyword, minPrice, maxPrice, languages, tags, pageable);
+        }
 
+        // Pobieranie listy książek
         List<Book> books = bookPage.getContent();
 
+        // Tworzenie DTO z książek
         List<BookDto> bookDtos = books.stream()
                 .map(BookDto::new)
                 .toList();
 
+        // Tworzenie listy książek z rabatem (jeśli dotyczy)
         List<BookWithDiscountDto> bookWithDiscountDtos = bookDtos.stream().map(book -> {
             DiscountDto discount = discountService.getDiscountByBookId(book.getId());
             return new BookWithDiscountDto(book, discount);
         }).toList();
 
-        return null;
+        return bookWithDiscountDtos;
     }
 }

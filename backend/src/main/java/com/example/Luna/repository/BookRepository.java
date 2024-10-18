@@ -13,14 +13,13 @@ import org.springframework.data.repository.query.Param;
 
 public interface BookRepository extends JpaRepository<Book, Integer> {
     Optional <Book> findById(long Id);
-
-    //for suggestions in search
+    
     List<Book> findTop5ByTitleContainingIgnoreCase(String title);
 
     @Query("SELECT DISTINCT b FROM Book b " +
-            "JOIN b.discounts d " +
-            "JOIN b.languages l " +
-            "JOIN b.tags t " +
+            "LEFT JOIN b.discounts d " +
+            "Left JOIN b.languages l " +
+            "left JOIN b.tags t " +
             "WHERE LOWER(b.title) LIKE LOWER(CONCAT('%', :title, '%')) " +
             "AND (b.price * (1 - COALESCE(d.percentage, 0) / 100.0) BETWEEN :minPrice AND :maxPrice) " +
             "AND (:languages IS NULL OR l.language IN :languages) " +
@@ -34,8 +33,8 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
             Pageable pageable);
 
     @Query("SELECT DISTINCT b FROM Book b " +
-            "JOIN b.languages l " +
-            "JOIN b.tags t " +
+            "left JOIN b.languages l " +
+            "left JOIN b.tags t " +
             "WHERE LOWER(b.title) LIKE LOWER(CONCAT('%', :title, '%')) " +
             "AND (b.price BETWEEN :minPrice AND :maxPrice) " +
             "AND (:languages IS NULL OR l.language IN :languages) " +
