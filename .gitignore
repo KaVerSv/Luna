@@ -31,3 +31,9 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### production ###
+production/
+
+### secret key ###
+backend/src/main/resources/application.yaml

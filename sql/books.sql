@@ -23,3 +23,8 @@ insert into roles (id, name)
 values  ( 1, 'ROLE_USER'),
         ( 2, 'ROLE_ADMIN'),
         ( 3, 'ROLE_PUBLISHER');
+
+
+insert into public.books (8,title, author, publish_date, description, likes, dislikes, price, image, path_string)
+values ('Around the World in Eighty Days', 'Jules Verne', 1873, 'An adventure novel by the French writer Jules Verne, first published in French in 1872. In the story, Phileas Fogg of London and his newly employed French valet Passepartout attempt to circumnavigate the world in 80 days on a wager of £20,000 (equivalent to £2.3 million in 2023) set by his friends at the Reform Club. It is one of Verne''s most acclaimed works.',
+       100,100, 12.99,'null','storage/books/Around the World in 28 Languages.mobi');

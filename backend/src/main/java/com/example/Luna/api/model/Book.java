@@ -61,10 +61,13 @@ public class Book {
     private Integer dislikes;
 
     @Column(name = "user_score")
-    private Integer user_score;
+    private Double user_score;
 
     @Column(name = "num_of_pages")
     private Integer num_of_pages;
+
+    @Column(name = "pathString")
+    private String path;
 
     @ManyToMany(mappedBy = "books")
     @JsonIgnoreProperties("books")
