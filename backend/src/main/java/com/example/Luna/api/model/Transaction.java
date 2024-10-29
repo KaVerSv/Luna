@@ -13,13 +13,13 @@ public class Transaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(name = "purchase_date", nullable = false)
     private LocalDateTime date;
 
     @Column(name = "book_id", nullable = false)
-    private Integer book_id;
+    private Long book_id;
 
     @Column(name = "price", nullable = false)
     private BigDecimal price;

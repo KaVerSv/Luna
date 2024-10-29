@@ -24,7 +24,7 @@ public class BookDto {
     private String image;
     private Integer likes;
     private Integer dislikes;
-    private Integer user_score;
+    private Double user_score;
     private Integer num_of_pages;
     private Set<TagDto> tags;
     private Set<LanguageDto> languages;
