@@ -74,11 +74,11 @@ public class User implements UserDetails{
             inverseJoinColumns = {@JoinColumn(name = "book_id")})
     private Set<Book> wishList = new HashSet<>();
 
-    @OneToMany
-    @JoinTable(name = "user_oldPasswords",
-            joinColumns = {@JoinColumn( name = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "oldPassword_id")})
+    @OneToMany(mappedBy = "user")
     private Set<OldPassword> oldPasswords = new HashSet<>();
+
+    @OneToOne(mappedBy = "user")
+    private ForgotPassword forgotPassword;
 
     public void addRole(Role role) {
         roles.add(role);
