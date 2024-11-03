@@ -36,4 +36,5 @@ build/
 production/
 
 ### secret key ###
-backend/src/main/resources/application.yaml
+/backend/src/main/resources/application.yaml
+/backend/src/main/resources/
