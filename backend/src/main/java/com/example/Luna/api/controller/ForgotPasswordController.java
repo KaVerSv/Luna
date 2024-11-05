@@ -117,11 +117,15 @@ public class ForgotPasswordController {
             }
         }
 
+        //update password
         userRepository.updatePassword(email, encodedPassword);
 
         //save new password to old Passwords
         OldPassword savedOldPassword = new OldPassword(encodedPassword, user);
         oldPasswordRepository.save(savedOldPassword);
+
+        //delete otp after successful use
+        forgotPasswordRepository.deleteById(fp.getId());
 
         return ResponseEntity.ok("Password changed!");
     }
