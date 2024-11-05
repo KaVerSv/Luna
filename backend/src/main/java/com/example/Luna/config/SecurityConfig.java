@@ -30,7 +30,8 @@ public class SecurityConfig {
             "/swagger-ui/**",
             "/error",
             "/api/books/**",
-            "/api/discounts/**"
+            "/api/discounts/**",
+            "/forgotPassword/**"
             };
 
     private final JwtAuthenticationFilter jwtAuthFilter;

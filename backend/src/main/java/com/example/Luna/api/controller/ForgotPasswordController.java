@@ -17,10 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.SecureRandom;
 import java.time.Instant;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -40,18 +37,34 @@ public class ForgotPasswordController {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(()->new RuntimeException("Email not found"));
 
-        int otp = secureRandom.nextInt();
+        //generate 256-bit key
+        byte[] token = new byte[32];
+        secureRandom.nextBytes(token);
+
+        String otp =  Base64.getUrlEncoder().withoutPadding().encodeToString(token);
+
+        // check if user have already an otp
+        Optional<ForgotPassword> existingOtp = forgotPasswordRepository.findByUser(user);
+
+        ForgotPassword fp;
+        if (existingOtp.isPresent()) {
+            //update otp with new values
+            fp = existingOtp.get();
+            fp.setOtp(otp);
+            fp.setExpirationTime(new Date(System.currentTimeMillis() + 300000)); // 5 min duration
+        } else {
+            //create new
+            fp = ForgotPassword.builder()
+                    .otp(otp)
+                    .expirationTime(new Date(System.currentTimeMillis() + 300000)) // 5 min duration
+                    .user(user)
+                    .build();
+        }
 
         MailBody mailBody = MailBody.builder()
                 .to(email)
                 .text("This is OTP for your Forgot Password request : " + otp)
                 .subject("OTP for forgot Password request")
-                .build();
-
-        ForgotPassword fp = ForgotPassword.builder()
-                .otp(otp)
-                .expirationTime(new Date(System.currentTimeMillis() + 70000)) //15 min duration
-                .user(user)
                 .build();
 
         forgotPasswordRepository.save(fp);
@@ -60,13 +73,13 @@ public class ForgotPasswordController {
         return ResponseEntity.ok("Email sent for verification!");
     }
 
-    @PostMapping("/verifyOtp/{otp}/{email}")
-    public ResponseEntity<String> verifyOtp(@PathVariable Integer otp, @PathVariable String email) {
+    @PostMapping("/verifyOTP/{otp}/{email}")
+    public ResponseEntity<String> verifyOtp(@PathVariable String otp, @PathVariable String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(()->new RuntimeException("Email not found"));
 
         ForgotPassword fp = forgotPasswordRepository.findByOtpAndUser(otp, user)
-                .orElseThrow(()->new RuntimeException("Invalid OTP for email: " + email));
+                .orElseThrow(()->new RuntimeException("Invalid OTP " + email));
 
         if (fp.getExpirationTime().before(Date.from(Instant.now()))) {
             forgotPasswordRepository.deleteById(fp.getId());
@@ -76,16 +89,24 @@ public class ForgotPasswordController {
         return ResponseEntity.ok("OTP verified!");
     }
 
-    @PostMapping("/changePassword/{email}")
-    public ResponseEntity<String> changePassword(@RequestBody ChangePassword changePassword, @PathVariable String email) {
+    @PostMapping("/changePassword/{otp}/{email}")
+    public ResponseEntity<String> changePassword(@RequestBody ChangePassword changePassword,@PathVariable String otp, @PathVariable String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(()->new RuntimeException("Email not found"));
+
+        ForgotPassword fp = forgotPasswordRepository.findByOtpAndUser(otp, user)
+                .orElseThrow(()->new RuntimeException("Invalid OTP " + email));
+
+        if (fp.getExpirationTime().before(Date.from(Instant.now()))) {
+            forgotPasswordRepository.deleteById(fp.getId());
+            return new ResponseEntity<>("OTP has expired!", HttpStatus.EXPECTATION_FAILED);
+        }
+
         if (!Objects.equals(changePassword.password(), changePassword.repeatedPassword())) {
             return new ResponseEntity<>("Please enter the password again!", HttpStatus.EXPECTATION_FAILED);
         }
 
         String encodedPassword = passwordEncoder.encode(changePassword.password());
-
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(()->new RuntimeException("Email not found"));
 
         List<OldPassword> oldPasswords = oldPasswordRepository.findByUser(user)
                 .orElse(Collections.emptyList());
@@ -104,5 +125,4 @@ public class ForgotPasswordController {
 
         return ResponseEntity.ok("Password changed!");
     }
-
 }
