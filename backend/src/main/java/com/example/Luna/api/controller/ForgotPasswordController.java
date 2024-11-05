@@ -37,11 +37,13 @@ public class ForgotPasswordController {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(()->new RuntimeException("Email not found"));
 
-        //generate 256-bit key
-        byte[] token = new byte[32];
-        secureRandom.nextBytes(token);
+        //generate 256-bit password
+        byte[] rawToken = new byte[32];
+        secureRandom.nextBytes(rawToken);
+        String plainToken = Base64.getUrlEncoder().withoutPadding().encodeToString(rawToken);
 
-        String otp =  Base64.getUrlEncoder().withoutPadding().encodeToString(token);
+        // Hashing token
+        String otpHashed = passwordEncoder.encode(plainToken);
 
         // check if user have already an otp
         Optional<ForgotPassword> existingOtp = forgotPasswordRepository.findByUser(user);
@@ -50,12 +52,12 @@ public class ForgotPasswordController {
         if (existingOtp.isPresent()) {
             //update otp with new values
             fp = existingOtp.get();
-            fp.setOtp(otp);
+            fp.setOtp(otpHashed);
             fp.setExpirationTime(new Date(System.currentTimeMillis() + 300000)); // 5 min duration
         } else {
             //create new
             fp = ForgotPassword.builder()
-                    .otp(otp)
+                    .otp(otpHashed)
                     .expirationTime(new Date(System.currentTimeMillis() + 300000)) // 5 min duration
                     .user(user)
                     .build();
@@ -63,7 +65,7 @@ public class ForgotPasswordController {
 
         MailBody mailBody = MailBody.builder()
                 .to(email)
-                .text("This is OTP for your Forgot Password request : " + otp)
+                .text("This is OTP for your Forgot Password request : " + plainToken)
                 .subject("OTP for forgot Password request")
                 .build();
 
@@ -78,7 +80,9 @@ public class ForgotPasswordController {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(()->new RuntimeException("Email not found"));
 
-        ForgotPassword fp = forgotPasswordRepository.findByOtpAndUser(otp, user)
+        String otpHashed = passwordEncoder.encode(otp);
+
+        ForgotPassword fp = forgotPasswordRepository.findByOtpAndUser(otpHashed, user)
                 .orElseThrow(()->new RuntimeException("Invalid OTP " + email));
 
         if (fp.getExpirationTime().before(Date.from(Instant.now()))) {
@@ -94,7 +98,9 @@ public class ForgotPasswordController {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(()->new RuntimeException("Email not found"));
 
-        ForgotPassword fp = forgotPasswordRepository.findByOtpAndUser(otp, user)
+        String otpHashed = passwordEncoder.encode(otp);
+
+        ForgotPassword fp = forgotPasswordRepository.findByOtpAndUser(otpHashed, user)
                 .orElseThrow(()->new RuntimeException("Invalid OTP " + email));
 
         if (fp.getExpirationTime().before(Date.from(Instant.now()))) {
