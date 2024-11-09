@@ -7,4 +7,6 @@ import java.util.List;
 public interface ReviewService {
 
     List<ReviewDTO> getRecentReviews(Long bookId);
+
+    ReviewDTO addReview(String text, Boolean vote, Long bookId);
 }
