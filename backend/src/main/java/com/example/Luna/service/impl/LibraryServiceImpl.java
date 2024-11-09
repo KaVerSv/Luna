@@ -1,18 +1,14 @@
 package com.example.Luna.service.impl;
 
 import com.example.Luna.api.dto.BookDto;
-import com.example.Luna.api.mapper.BookMapper;
 import com.example.Luna.api.model.Book;
 import com.example.Luna.api.model.User;
 import com.example.Luna.repository.BookRepository;
-import com.example.Luna.repository.UserRepository;
-import com.example.Luna.security.service.JwtService;
+import com.example.Luna.security.service.UserContextService;
 import com.example.Luna.service.LibraryService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.io.FileNotFoundException;
@@ -30,25 +26,18 @@ import java.util.stream.Collectors;
 public class LibraryServiceImpl implements LibraryService {
 
     private BookRepository bookRepository;
-    private UserRepository userRepository;
-    private final JwtService jwtService;
+    private final UserContextService userContextService;
 
-    public List<BookDto> getUserLibrary(@NonNull HttpServletRequest request) {
-        String username = decodeUsername(request.getHeader("Authorization"));
-
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new IllegalArgumentException("User not found with username: " + username));
+    public List<BookDto> getUserLibrary() {
+        User user = userContextService.getCurrentUser();
 
         return user.getBooks().stream()
                 .map(BookDto::new)
                 .collect(Collectors.toList());
     }
 
-    public Resource getResource(@NonNull HttpServletRequest request, Long id) throws IOException {
-        String username = decodeUsername(request.getHeader("Authorization"));
-
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new IllegalArgumentException("User not found with username: " + username));
+    public Resource getResource(Long id) throws IOException {
+        User user = userContextService.getCurrentUser();
 
         Set<Book> books = user.getBooks();
 
@@ -77,12 +66,5 @@ public class LibraryServiceImpl implements LibraryService {
         } else {
             throw new IllegalArgumentException("Book not found with id: " + id);
         }
-    }
-
-    private String decodeUsername(String authHeader) {
-        final String jwt;
-
-        jwt = authHeader.substring(7);
-        return jwtService.extractUsername(jwt);
     }
 }

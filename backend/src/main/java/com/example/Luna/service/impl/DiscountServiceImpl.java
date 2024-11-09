@@ -1,9 +1,7 @@
 package com.example.Luna.service.impl;
 
-import com.example.Luna.api.dto.BookDto;
 import com.example.Luna.api.dto.DiscountDto;
 import com.example.Luna.api.exception.ResourceNotFoundException;
-import com.example.Luna.api.mapper.BookMapper;
 import com.example.Luna.api.mapper.DiscountMapper;
 import com.example.Luna.api.model.Book;
 import com.example.Luna.api.model.Discount;

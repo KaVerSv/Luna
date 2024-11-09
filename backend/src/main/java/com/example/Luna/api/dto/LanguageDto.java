@@ -1,7 +1,6 @@
 package com.example.Luna.api.dto;
 
 import com.example.Luna.api.model.Language;
-import com.example.Luna.api.model.Tag;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

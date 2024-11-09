@@ -1,8 +1,6 @@
 package com.example.Luna.security.auth;
 
 import io.swagger.v3.oas.annotations.Operation;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import com.example.Luna.security.auth.AuthenticationRequest;
 import com.example.Luna.security.auth.AuthenticationResponse;
 import com.example.Luna.security.auth.RegisterRequest;
@@ -13,8 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/v1/auth")
