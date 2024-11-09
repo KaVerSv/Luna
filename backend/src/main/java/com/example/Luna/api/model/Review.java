@@ -12,19 +12,16 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
-@Getter
 @Setter
+@Getter
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
 @Table(name = "reviews")
 public class Review {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "userId", nullable = false)
+    @Column(name = "user_id", nullable = false)
     private Long userId;
 
     @Column(name = "vote", nullable = false)
@@ -34,13 +31,12 @@ public class Review {
     private String text;
 
     @Column(name = "date", nullable = false)
-    private java.sql.Timestamp sqlTimestamp = Timestamp.from(Instant.now());
+    private Timestamp sqlTimestamp = Timestamp.from(Instant.now());
 
-    @ManyToMany
-    @JoinTable(name = "user_reviews",
-            joinColumns = {@JoinColumn( name = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "book_id")})
-    @JsonIgnoreProperties("reviews")
-    private Set<Tag> user_reviews = new HashSet<>();
+    @ManyToOne
+    @JoinColumn(name = "book_id", nullable = false)
+    private Book book;
 
+    // Getters and setters
 }
+

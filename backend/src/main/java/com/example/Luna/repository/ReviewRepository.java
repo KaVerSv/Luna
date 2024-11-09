@@ -11,8 +11,9 @@ import java.util.List;
 
 public interface ReviewRepository extends JpaRepository<Review, Integer> {
 
-    @Query("SELECT r FROM Review r JOIN r.user_reviews ur WHERE ur.id = :bookId AND r.sqlTimestamp >= :thirtyDaysAgo ORDER BY r.sqlTimestamp DESC")
+    @Query("SELECT r FROM Review r WHERE r.book.id = :bookId AND r.sqlTimestamp >= :thirtyDaysAgo ORDER BY r.sqlTimestamp DESC")
     List<Review> findRecentReviewsByBookId(@Param("bookId") Long bookId, @Param("thirtyDaysAgo") Timestamp thirtyDaysAgo);
+
 
     int countByUserId(Long User_id);
 }
