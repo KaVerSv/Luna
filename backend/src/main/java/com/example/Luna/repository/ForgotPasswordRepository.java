@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
 
-public interface ForgotPasswordRepository extends JpaRepository<ForgotPassword, Integer> {
+public interface ForgotPasswordRepository extends JpaRepository<ForgotPassword, Long> {
 
     @Query("select fp from ForgotPassword  fp where fp.otp = ?1 and fp.user = ?2")
     Optional<ForgotPassword> findByOtpAndUser(String otp, User user);

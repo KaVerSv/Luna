@@ -15,13 +15,19 @@ public class ForgotPassword {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(nullable = false)
     private String otp;
 
     @Column(nullable = false)
     private Date expirationTime;
+
+    @Column(nullable = false)
+    private Integer failedAttempts;
+
+    @Column
+    private Date blockTime;
 
     @OneToOne
     private User user;
