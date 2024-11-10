@@ -2,7 +2,7 @@ package com.example.Luna.service;
 
 import org.springframework.stereotype.Service;
 import com.example.Luna.api.dto.ChangePassword;
-import com.example.Luna.api.dto.MailBody;
+
 import com.example.Luna.api.model.ForgotPassword;
 import com.example.Luna.api.model.OldPassword;
 import com.example.Luna.api.model.User;
@@ -60,13 +60,13 @@ public class ForgotPasswordService {
         fp.setFailedAttempts(fp.getFailedAttempts() + 1);
         forgotPasswordRepository.save(fp);
 
-        // Sending mail
-        MailBody mailBody = MailBody.builder()
-                .to(email)
-                .text("This is OTP for your Forgot Password request: " + plainToken)
-                .subject("OTP for Forgot Password Request")
-                .build();
-        emailService.sendSimpleMessage(mailBody);
+        emailService.send(
+                email,
+                "Password recovery request",
+                "http://localhost:8080/forgotPassword/verifyMail/kacperwx@gmail.com" + plainToken,
+                user.getName(),
+                "Request for password recovery, to reset your password follow this link"
+        );
     }
 
     public void changePassword(String otp, String email, ChangePassword changePassword) {

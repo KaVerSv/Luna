@@ -14,8 +14,8 @@ public class ForgotPasswordController {
 
     private final ForgotPasswordService forgotPasswordService;
 
-    @PostMapping("/verifyMail/{email}")
-    public ResponseEntity<String> verifyEmail(@PathVariable String email) {
+    @PostMapping("/passwordRecoveryRequest/{email}")
+    public ResponseEntity<String> passwordRecoveryRequest(@PathVariable String email) {
         try {
             forgotPasswordService.generateAndSendOtp(email);
             return ResponseEntity.ok("Email sent for verification!");
