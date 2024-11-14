@@ -55,10 +55,10 @@ public class User implements UserDetails{
     private Set<Book> cart = new HashSet<>();
 
     @ManyToMany
-    @JoinTable(name = "user_transactions",
+    @JoinTable(name = "user_orders",
             joinColumns = {@JoinColumn( name = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "transaction_id")})
-    private Set<Transaction> transactions = new HashSet<>();
+            inverseJoinColumns = {@JoinColumn(name = "order_id")})
+    private Set<Order> transactions = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",

@@ -3,16 +3,17 @@ package com.example.Luna.service.impl;
 import com.example.Luna.api.dto.DiscountDto;
 import com.example.Luna.api.exception.ResourceNotFoundException;
 import com.example.Luna.api.mapper.DiscountMapper;
-import com.example.Luna.api.model.Book;
-import com.example.Luna.api.model.Discount;
+import com.example.Luna.api.model.*;
 import com.example.Luna.repository.BookRepository;
 import com.example.Luna.repository.DiscountRepository;
+import com.example.Luna.repository.OrderRepository;
 import com.example.Luna.service.DiscountService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,9 +22,29 @@ import java.util.stream.Collectors;
 public class DiscountServiceImpl implements DiscountService {
     private final DiscountRepository discountRepository;
     private final BookRepository bookRepository;
+    private final OrderRepository orderRepository;
 
     @Override
-    public DiscountDto getDiscountByBookId(long bookId) {
+    public Discount getDiscountByBook(Book book) {
+        // Find the latest discount for the given book
+        Discount discount = discountRepository.findFirstByBooks_IdOrderByEndDateDesc(book.getId())
+                .orElse(null);
+
+        if (discount == null) {
+            return null;
+        }
+
+        // Check if the discount has not ended
+        LocalDate localDate = LocalDate.now();
+        if (discount.getEndDate().isBefore(localDate)) {
+            throw new ResourceNotFoundException("Book not on discount");
+        }
+
+        return discount;
+    }
+
+    @Override
+    public DiscountDto getDiscountDtoByBookId(long bookId) {
         // Find the latest discount for the given book
         Discount discount = discountRepository.findFirstByBooks_IdOrderByEndDateDesc(bookId)
                 .orElse(null);
@@ -85,5 +106,28 @@ public class DiscountServiceImpl implements DiscountService {
             }
         }
         return booksOnActiveDiscount;
+    }
+
+    public Order createOrder(User user, List<Book> books) {
+        Order order = new Order();
+        order.setUser(user);
+        order.setOrderDate(new Date());
+        order.setPaid(false);
+
+        for (Book book : books) {
+            // Check for active discount
+            Discount discount = discountRepository.findFirstByBooks_IdOrderByEndDateDesc(book.getId())
+                    .filter(d -> !d.getEndDate().isBefore(LocalDate.now()))
+                    .orElse(null);
+
+            OrderItem orderItem = new OrderItem();
+            orderItem.setBook(book);
+            orderItem.setDiscount(discount);
+            orderItem.setPriceAtPurchase(orderItem.calculateEffectivePrice());
+
+            order.addOrderItem(orderItem);
+        }
+
+        return orderRepository.save(order);
     }
 }

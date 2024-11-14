@@ -6,7 +6,6 @@ import com.example.Luna.api.model.Book;
 import com.example.Luna.api.model.User;
 import com.example.Luna.repository.BookRepository;
 import com.example.Luna.repository.UserRepository;
-import com.example.Luna.security.service.JwtService;
 import com.example.Luna.security.service.UserContextService;
 import com.example.Luna.service.CartService;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +21,6 @@ public class CartServiceImpl implements CartService {
 
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
-    private final JwtService jwtService;
     private final UserContextService userContextService;
 
     @Override

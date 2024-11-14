@@ -16,7 +16,7 @@ public class DiscountController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<DiscountDto> getDiscount(@PathVariable("id") int bookId) {
-        DiscountDto discountDto = discountService.getDiscountByBookId(bookId);
+        DiscountDto discountDto = discountService.getDiscountDtoByBookId(bookId);
         return ResponseEntity.ok(discountDto);
     }
 

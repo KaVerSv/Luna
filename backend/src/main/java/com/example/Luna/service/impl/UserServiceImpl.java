@@ -10,6 +10,9 @@ import com.example.Luna.security.service.UserContextService;
 import com.example.Luna.service.DiscountService;
 import com.example.Luna.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -75,4 +78,13 @@ public class UserServiceImpl implements UserService {
 
         return bookDtos;
     }
+
+    public String getCurrentUsername() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetails userDetails) {
+            return userDetails.getUsername();
+        }
+        return null;
+    }
+
 }

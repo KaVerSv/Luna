@@ -5,8 +5,8 @@ import com.example.Luna.api.model.Review;
 import com.example.Luna.api.model.User;
 import com.example.Luna.repository.ReviewRepository;
 import com.example.Luna.repository.UserRepository;
-import com.example.Luna.security.service.UserContextService;
 import com.example.Luna.service.ReviewService;
+import com.example.Luna.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +20,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     private final ReviewRepository reviewRepository;
     private final UserRepository userRepository;
-    private final UserContextService userContextService;
+    private final UserService userService;
 
     public List<ReviewDTO> getRecentReviews(Long bookId) {
         Timestamp thirtyDaysAgo = Timestamp.from(Instant.now().minusSeconds(30L * 24 * 60 * 60));
@@ -31,7 +31,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     public ReviewDTO addReview(String text, Boolean vote, Long bookId) {
-        String username = userContextService.getCurrentUsername();
+        String username = userService.getCurrentUsername();
         Long userId = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found")).getId();
 

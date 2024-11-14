@@ -43,7 +43,7 @@ public class BookServiceImpl implements BookService {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(()-> new ResourceNotFoundException("Book by id: " + bookId + " not found"));
         BookDto bookdto = new BookDto(book);
-        DiscountDto discount = discountService.getDiscountByBookId(book.getId());
+        DiscountDto discount = discountService.getDiscountDtoByBookId(book.getId());
         return new BookWithDiscountDto(bookdto, discount);
     }
 
@@ -79,7 +79,7 @@ public class BookServiceImpl implements BookService {
                 .toList();
 
         return bookDtos.stream().map(book -> {
-            DiscountDto discount = discountService.getDiscountByBookId(book.getId());
+            DiscountDto discount = discountService.getDiscountDtoByBookId(book.getId());
             return new BookWithDiscountDto(book, discount);
         }).collect(Collectors.toList());
     }
@@ -92,7 +92,7 @@ public class BookServiceImpl implements BookService {
                 .toList();
 
         return bookDtos.stream().map(book -> {
-            DiscountDto discount = discountService.getDiscountByBookId(book.getId());
+            DiscountDto discount = discountService.getDiscountDtoByBookId(book.getId());
             return new BookWithDiscountDto(book, discount);
         }).collect(Collectors.toList());
     }
@@ -136,7 +136,7 @@ public class BookServiceImpl implements BookService {
 
         // Tworzenie listy książek z rabatem (jeśli dotyczy)
         List<BookWithDiscountDto> bookWithDiscountDtos = bookDtos.stream().map(book -> {
-            DiscountDto discount = discountService.getDiscountByBookId(book.getId());
+            DiscountDto discount = discountService.getDiscountDtoByBookId(book.getId());
             return new BookWithDiscountDto(book, discount);
         }).toList();
 

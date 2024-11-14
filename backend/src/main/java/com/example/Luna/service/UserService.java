@@ -15,4 +15,5 @@ public interface UserService {
     void removeFromWishList(Integer bookId);
     Boolean isAdmin();
     List<BookDto> checkForActiveDiscountsOnWishList();
+    String getCurrentUsername();
 }

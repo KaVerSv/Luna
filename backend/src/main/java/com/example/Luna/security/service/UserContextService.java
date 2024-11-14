@@ -14,21 +14,19 @@ public class UserContextService {
 
     private final UserRepository userRepository;
 
-    public String getCurrentUsername() {
+    public User getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.getPrincipal() instanceof UserDetails userDetails) {
-            return userDetails.getUsername();
+            return userRepository.findByUsername(userDetails.getUsername())
+                    .orElseThrow(() -> new RuntimeException("User not found"));
         }
         return null;
     }
 
-    public User getCurrentUser() {
+    public String getCurrentUsername() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.getPrincipal() instanceof UserDetails userDetails) {
-            String username = userDetails.getUsername();
-
-            return userRepository.findByUsername(username)
-                    .orElseThrow(() -> new IllegalArgumentException("User not found with username: " + username));
+            return userDetails.getUsername();
         }
         return null;
     }

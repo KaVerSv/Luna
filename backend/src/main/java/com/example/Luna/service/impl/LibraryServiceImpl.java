@@ -6,6 +6,7 @@ import com.example.Luna.api.model.User;
 import com.example.Luna.repository.BookRepository;
 import com.example.Luna.security.service.UserContextService;
 import com.example.Luna.service.LibraryService;
+import com.example.Luna.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
