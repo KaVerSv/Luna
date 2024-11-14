@@ -1,0 +1,50 @@
+server:
+  error:
+    include-message: always
+    include-binding-errors: always
+
+spring:
+  application:
+    name: Luna
+
+  security:
+    jwt:
+      secret-key: 08d2fa4bb9985f0c2d480deb93062c7a5e92583a375a361794fdeaa6395454dfe63410695d7d56d537b52bdcf839796ed046240b56bcf2c59bcf7ab5732d31875d91bd67b05e15ee3f1c8510c7a8892523839419bd4d0a8fa2fed9ec9919a9437d9696e36173a1d0ed2ab59685f181dc7ab687c49f29013aa66eeb742b076944146949214f93415159e0e314b613bd3f50f38ce550ff902ba269875fa214c65961945db1688dc39a449aec1236f8be32f9cde7813ea0e400e8e299c64d0e3e45d88f73662e99649c3dcf075c044b9efc71a10f45690866485b6e3e3b3d3bf7027e95636fe12257af82504b84bbf8d332e3b45c8318c7c4b51667f09cbca892f6
+      expiration: 86400000 # a day
+      refresh-token:
+        expiration: 604800000 # 7 days
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop # uses create-drop as specified in the second config
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/registration # defaulting to registration DB as specified in the second config
+    username: docker
+    password: docker
+
+  mail:
+    host: localhost
+    port: 1025
+    username: hello
+    password: hello
+    properties:
+      mail:
+        smtp:
+          ssl:
+            trust: "*"
+          auth: true
+          starttls:
+            enable: true
+          connectiontimeout: 5000
+          timeout: 3000
+          writetimeout: 5000
+
+  threads:
+    virtual:
+      enabled: true
