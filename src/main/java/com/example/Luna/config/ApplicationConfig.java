@@ -2,6 +2,7 @@ package com.example.Luna.config;
 
 import com.example.Luna.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -46,6 +47,7 @@ public class ApplicationConfig {
     }
 
     @Bean
+    @ConfigurationProperties(prefix = "spring.mail")
     public JavaMailSender javaMailSender() {
         return new JavaMailSenderImpl();
     }

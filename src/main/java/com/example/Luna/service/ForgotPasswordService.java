@@ -63,7 +63,7 @@ public class ForgotPasswordService {
         emailService.send(
                 email,
                 "Password recovery request",
-                "http://localhost:8080/forgotPassword/verifyMail/kacperwx@gmail.com" + plainToken,
+                "http://localhost:8080/forgotPassword/verifyMail/" + user.getEmail() + "/" + plainToken,
                 user.getName(),
                 "Request for password recovery, to reset your password follow this link"
         );
