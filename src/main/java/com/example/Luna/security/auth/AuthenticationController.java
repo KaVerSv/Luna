@@ -7,10 +7,7 @@ import com.example.Luna.security.auth.RegisterRequest;
 import com.example.Luna.security.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -19,18 +16,19 @@ public class AuthenticationController {
     private final AuthenticationService service;
 
     @Operation(summary = "Register User",
-            description = "Register user in application. The Response is access token and refresh token")
+            description = "Register user in application. Send mail for account confirmation")
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(
-            @RequestBody RegisterRequest request
-    ) {
+    public ResponseEntity<String> register(@RequestBody RegisterRequest request) {
         return ResponseEntity.ok(service.register(request));
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponse> authenticate(
-            @RequestBody AuthenticationRequest request
-    ) {
+    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
         return ResponseEntity.ok(service.authenticate(request));
+    }
+
+    @PostMapping("/verifyMail/{email}/{otp}")
+    public ResponseEntity<String> verifyMail(@PathVariable String email,@PathVariable String otp) {
+        return ResponseEntity.ok(service.verifyMail(email,otp));
     }
 }

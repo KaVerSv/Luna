@@ -21,12 +21,12 @@ public class EmailService {
     private final JavaMailSender mailSender;
 
     @Async
-    public void send(String to, String subject, String link, String name, String message) {
+    public void send(String to, String subject, String link, String name, String message, String title) {
         try {
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
 
-            String emailBody = buildEmail(name, link, message);
+            String emailBody = buildEmail(name, link, message, title);
 
             helper.setText(emailBody, true);
             helper.setTo(to);
@@ -40,7 +40,7 @@ public class EmailService {
     }
 
 
-    private String buildEmail(String name, String link, String message) {
+    private String buildEmail(String name, String link, String message, String title) {
         return "<div style=\"font-family:Helvetica,Arial,sans-serif;font-size:16px;margin:0;color:#0b0c0c\">\n" +
                 "\n" +
                 "<span style=\"display:none;font-size:1px;color:#fff;max-height:0\"></span>\n" +
@@ -58,7 +58,7 @@ public class EmailService {
                 "                  \n" +
                 "                    </td>\n" +
                 "                    <td style=\"font-size:28px;line-height:1.315789474;Margin-top:4px;padding-left:10px\">\n" +
-                "                      <span style=\"font-family:Helvetica,Arial,sans-serif;font-weight:700;color:#ffffff;text-decoration:none;vertical-align:top;display:inline-block\">Confirm your email</span>\n" +
+                "                      <span style=\"font-family:Helvetica,Arial,sans-serif;font-weight:700;color:#ffffff;text-decoration:none;vertical-align:top;display:inline-block\">"+ title + "</span>\n" +
                 "                    </td>\n" +
                 "                  </tr>\n" +
                 "                </tbody></table>\n" +

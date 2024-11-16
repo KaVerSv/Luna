@@ -42,6 +42,9 @@ public class User implements UserDetails{
     @Column(name = "phone")
     private String phone;
 
+    @Column(name = "enabled", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private Boolean enabled = false;
+
     @ManyToMany
     @JoinTable(name = "user_books",
             joinColumns = {@JoinColumn( name = "user_id")},
@@ -78,6 +81,9 @@ public class User implements UserDetails{
     @OneToOne(mappedBy = "user")
     private ForgotPassword forgotPassword;
 
+    @OneToOne(mappedBy = "user")
+    private UserActivation userActivation;
+
     public void addRole(Role role) {
         roles.add(role);
         role.getUsers().add(this);
@@ -112,7 +118,7 @@ public class User implements UserDetails{
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return this.enabled;
     }
 
 }
