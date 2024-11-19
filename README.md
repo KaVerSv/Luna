@@ -3,7 +3,7 @@ projekt internetowej platformy do sprzedaży i dystrybucji ebooków
 
 # Pages
 * Main Page
-![img.png](readme-images/img.png)
+![shop-dune.png](readme-images/shop-dune.png)
 * Login page
 ![img_1.png](readme-images/img_1.png)
 * Register page
@@ -11,7 +11,7 @@ projekt internetowej platformy do sprzedaży i dystrybucji ebooków
 * Books owned by user Steve at his Library
 ![img_3.png](readme-images/img_3.png)
 * Page of Book Steve would like to buy
-![img_4.png](readme-images/img_4.png)
+![img_4.png](readme-images/dune-page.png)
 * notification of book added to cart
 ![img_5.png](readme-images/img_5.png)
 * his cart
