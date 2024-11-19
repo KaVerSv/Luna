@@ -20,11 +20,12 @@ import java.util.Set;
 @Table(name = "discounts")
 public class Discount {
 
-    public Discount(Long id, int percentage, LocalDate startDate, LocalDate endDate) {
+    public Discount(Long id, int percentage, LocalDate startDate, LocalDate endDate, String name) {
         this.id = id;
         this.percentage = percentage;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.name = name;
         this.books = new HashSet<>();
     }
 
@@ -44,6 +45,9 @@ public class Discount {
     @Column(name = "end_date", nullable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
+
+    @Column(name = "name")
+    private String name;
 
     @ManyToMany(mappedBy = "discounts")
     @JsonIgnoreProperties("discounts")

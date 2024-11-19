@@ -9,7 +9,8 @@ public class DiscountMapper {
                 discount.getId(),
                 discount.getPercentage(),
                 discount.getStartDate(),
-                discount.getEndDate()
+                discount.getEndDate(),
+                discount.getName()
         );
     }
 
@@ -18,7 +19,8 @@ public class DiscountMapper {
                 discountdto.getId(),
                 discountdto.getPercentage(),
                 discountdto.getStartDate(),
-                discountdto.getEndDate()
+                discountdto.getEndDate(),
+                discountdto.getName()
         );
     }
 }

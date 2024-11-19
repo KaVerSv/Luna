@@ -16,4 +16,5 @@ public class DiscountDto {
     private Integer percentage;
     private LocalDate startDate;
     private LocalDate endDate;
+    private String name;
 }
