@@ -68,6 +68,7 @@ public class AuthenticationService {
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .roles(new HashSet<>())
+                .enabled(false)
                 .build();
         userRepository.save(newUser);
         UserActivation userActivation = createUserActivation(newUser);

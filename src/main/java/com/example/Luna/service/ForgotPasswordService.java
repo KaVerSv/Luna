@@ -60,24 +60,25 @@ public class ForgotPasswordService {
         fp.setFailedAttempts(fp.getFailedAttempts() + 1);
         forgotPasswordRepository.save(fp);
 
+        String frontendLink = "http://localhost:5173/resetPassword?otp=" + plainToken;
         emailService.send(
                 email,
                 "Password recovery request",
-                "http://localhost:8080/forgotPassword/verifyMail/" + user.getEmail() + "/" + plainToken,
+                frontendLink,
                 user.getName(),
                 "Request for password recovery, to reset your password follow this link",
                 "Password Reset"
         );
     }
 
-    public void changePassword(String otp, String email, ChangePassword changePassword) {
-        User user = userRepository.findByEmail(email)
+    public void changePassword(String otp, ChangePassword changePassword) {
+        User user = userRepository.findByForgotPasswordOtp(otp)
                 .orElseThrow(() -> new RuntimeException("Email not found"));
 
         ForgotPassword fp = forgotPasswordRepository.findByUser(user)
                 .orElseThrow(() -> new RuntimeException("Invalid OTP"));
 
-        verifyOtp(otp, email);
+        verifyOtp(fp);
 
         if (!changePassword.password().equals(changePassword.repeatedPassword())) {
             throw new RuntimeException("Passwords do not match.");
@@ -92,17 +93,12 @@ public class ForgotPasswordService {
             }
         }
 
-        userRepository.updatePassword(email, newEncodedPassword);
+        userRepository.updatePasswordById(user.getId(), newEncodedPassword);
         oldPasswordRepository.save(new OldPassword(newEncodedPassword, user));
         forgotPasswordRepository.delete(fp);
     }
 
-    private void verifyOtp(String otp, String email) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Email not found"));
-
-        ForgotPassword fp = forgotPasswordRepository.findByUser(user)
-                .orElseThrow(() -> new RuntimeException("OTP not found for user"));
+    private void verifyOtp(ForgotPassword fp) {
 
         if (fp.getBlockTime() != null && fp.getBlockTime().after(new Date())) {
             throw new RuntimeException("Account is temporarily locked.");
@@ -110,10 +106,6 @@ public class ForgotPasswordService {
 
         if (fp.getExpirationTime().before(new Date()) ) {
             throw new RuntimeException("OTP expired");
-        }
-
-        if (!passwordEncoder.matches(otp, fp.getOtp())) {
-            throw new RuntimeException("is invalid.");
         }
     }
 }
