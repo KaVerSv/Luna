@@ -24,10 +24,10 @@ public class ForgotPasswordController {
         }
     }
 
-    @PostMapping("/changePassword/{otp}/{email}")
-    public ResponseEntity<String> changePassword(@RequestBody ChangePassword changePassword, @PathVariable String otp, @PathVariable String email) {
+    @PostMapping("/changePassword/")
+    public ResponseEntity<String> changePassword(@RequestBody ChangePassword changePassword, @RequestHeader("X-OTP") String otp) {
         try {
-            forgotPasswordService.changePassword(otp, email, changePassword);
+            forgotPasswordService.changePassword(otp, changePassword);
             return ResponseEntity.ok("Password changed!");
         } catch (RuntimeException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.EXPECTATION_FAILED);
