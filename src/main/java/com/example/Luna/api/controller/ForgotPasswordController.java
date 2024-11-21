@@ -24,7 +24,7 @@ public class ForgotPasswordController {
         }
     }
 
-    @PostMapping("/changePassword")
+    @PostMapping("/changePassword/")
     public ResponseEntity<String> changePassword(@RequestBody ChangePassword changePassword, @RequestHeader("X-OTP") String otp) {
         try {
             forgotPasswordService.changePassword(otp, changePassword);
