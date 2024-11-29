@@ -2,6 +2,7 @@ package com.example.Luna.api.model;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import jakarta.persistence.*;
 import lombok.Getter;

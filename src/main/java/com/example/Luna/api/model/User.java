@@ -57,7 +57,7 @@ public class User implements UserDetails{
             inverseJoinColumns = {@JoinColumn(name = "book_id")})
     private Set<Book> cart = new HashSet<>();
 
-    @ManyToMany
+    @OneToMany
     @JoinTable(name = "user_orders",
             joinColumns = {@JoinColumn( name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "order_id")})

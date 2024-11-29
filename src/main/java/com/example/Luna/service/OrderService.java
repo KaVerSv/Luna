@@ -2,6 +2,7 @@ package com.example.Luna.service;
 
 
 import com.example.Luna.api.dto.*;
+import com.example.Luna.api.mapper.DiscountMapper;
 import com.example.Luna.api.model.Book;
 import com.example.Luna.api.model.Order;
 import com.example.Luna.api.model.OrderItem;
@@ -101,8 +102,8 @@ public class OrderService {
             Set<OrderItemDto> orderItemDtos = order.getOrderItems().stream().map(orderItem ->
                     new OrderItemDto(
                             orderItem.getId(),
-                            orderItem.getBook(),
-                            orderItem.getDiscount(),
+                            new BookDto(orderItem.getBook()),
+                            DiscountMapper.mapToDiscountDto(orderItem.getDiscount()),
                             orderItem.getPriceAtPurchase()
                     )
             ).collect(Collectors.toSet());
@@ -111,7 +112,6 @@ public class OrderService {
             return new OrderDto(
                     order.getId(),
                     order.getOrderDate(),
-                    order.getUser(),
                     order.isPaid(),
                     order.getPayUOrderId(),
                     orderItemDtos
@@ -123,8 +123,9 @@ public class OrderService {
         User user = userContextService.getCurrentUser();
         Order order = orderRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Order not found"));
         //ensure order belongs to user
-        if(!user.getOrders().contains(order))
+        if (!order.getUser().equals(user)) {
             throw new IllegalStateException("Order not found");
+        }
 
         return new OrderDto(order);
     }

@@ -1,16 +1,13 @@
 package com.example.Luna.api.controller;
 
 import com.example.Luna.api.dto.OrderDto;
+import com.example.Luna.api.dto.PaymentVerificationRequest;
 import com.example.Luna.api.model.User;
 import com.example.Luna.security.service.UserContextService;
 import com.example.Luna.service.OrderService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
@@ -32,7 +29,8 @@ public class OrderController {
     }
 
     @PostMapping("/confirm")
-    public ResponseEntity<?> confirmOrder(@RequestParam("transactionId") String transactionId ){
+    public ResponseEntity<?> confirmOrder(@RequestBody PaymentVerificationRequest request ){
+        String transactionId = request.getTransactionId();
         User user = userContextService.getCurrentUser();
         orderService.confirmOrder(user.getId(), transactionId);
         return ResponseEntity.ok("Order confirmed and saved");
@@ -44,7 +42,7 @@ public class OrderController {
         return orderService.getOrdersForUser(user.getId());
     }
 
-    @GetMapping()
+    @GetMapping("/confirm")
     public OrderDto getOrderById(@RequestParam("id") Long id) {
         return orderService.getOrderById(id);
     }

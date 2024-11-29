@@ -17,4 +17,5 @@ public class BookMapper {
                 bookDto.getDislikes()
         );
     }
+
 }
