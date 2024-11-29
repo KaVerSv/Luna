@@ -61,7 +61,7 @@ public class User implements UserDetails{
     @JoinTable(name = "user_orders",
             joinColumns = {@JoinColumn( name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "order_id")})
-    private Set<Order> transactions = new HashSet<>();
+    private Set<Order> orders = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",

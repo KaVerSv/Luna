@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 @Entity
 @Getter
@@ -34,7 +35,9 @@ public class OrderItem {
     public BigDecimal calculateEffectivePrice() {
         if (discount != null) {
             BigDecimal discountMultiplier = BigDecimal.valueOf((100 - discount.getPercentage()) / 100.0);
-            return book.getPrice().multiply(discountMultiplier);
+            BigDecimal discountedPrice = book.getPrice().multiply(discountMultiplier);
+            // Zaokrąglanie do 2 miejsc po przecinku
+            return discountedPrice.setScale(2, RoundingMode.HALF_UP);
         }
         return book.getPrice();
     }

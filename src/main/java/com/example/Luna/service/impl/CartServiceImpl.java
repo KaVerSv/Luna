@@ -1,8 +1,11 @@
 package com.example.Luna.service.impl;
 
 import com.example.Luna.api.dto.BookDto;
+import com.example.Luna.api.dto.BookWithDiscountDto;
+import com.example.Luna.api.dto.DiscountDto;
 import com.example.Luna.api.exception.ItemAlreadyInCartException;
 import com.example.Luna.api.model.Book;
+import com.example.Luna.api.model.Discount;
 import com.example.Luna.api.model.User;
 import com.example.Luna.repository.BookRepository;
 import com.example.Luna.repository.UserRepository;
@@ -12,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,13 +29,25 @@ public class CartServiceImpl implements CartService {
     private final UserContextService userContextService;
 
     @Override
-    public List<BookDto> getUserCart() {
+    public List<BookWithDiscountDto> getUserCartDto() {
         User user = userContextService.getCurrentUser();
 
         return user.getCart().stream()
-                .map(BookDto::new)
+                .map(book -> {
+                    Discount bestDiscount = getBestDiscountForBook(book);
+                    DiscountDto discountDto = bestDiscount != null ? new DiscountDto(
+                            bestDiscount.getId(),
+                            bestDiscount.getPercentage(),
+                            bestDiscount.getStartDate(),
+                            bestDiscount.getEndDate(),
+                            bestDiscount.getName()
+                    ) : null;
+
+                    return new BookWithDiscountDto(new BookDto(book), discountDto);
+                })
                 .collect(Collectors.toList());
     }
+
 
     @Override
     public void addToCart(int id) {
@@ -69,11 +86,18 @@ public class CartServiceImpl implements CartService {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    public void addToLibrary() {
-        User user = userContextService.getCurrentUser();
-
+    public void addToLibraryAndClear(User user) {
         user.getBooks().addAll(user.getCart());
         user.getCart().clear();
         userRepository.save(user);
     }
+
+    private Discount getBestDiscountForBook(Book book) {
+        LocalDate now = LocalDate.now();
+        return book.getDiscounts().stream()
+                .filter(discount -> discount.getStartDate().isBefore(now) && discount.getEndDate().isAfter(now))
+                .max(Comparator.comparingInt(Discount::getPercentage))
+                .orElse(null); // Brak rabatu, jeśli żaden nie pasuje
+    }
+
 }

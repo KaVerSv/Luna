@@ -1,6 +1,6 @@
 package com.example.Luna.api.controller;
 
-import com.example.Luna.api.dto.BookDto;
+import com.example.Luna.api.dto.BookWithDiscountDto;
 import com.example.Luna.api.exception.ItemAlreadyInCartException;
 import com.example.Luna.service.CartService;
 import lombok.AllArgsConstructor;
@@ -19,8 +19,8 @@ public class CartController {
     private CartService cartService;
 
     @GetMapping()
-    public ResponseEntity<List<BookDto>> getUserCart() {
-        List<BookDto> books = cartService.getUserCart();
+    public ResponseEntity<List<BookWithDiscountDto>> getUserCart() {
+        List<BookWithDiscountDto> books = cartService.getUserCartDto();
         return ResponseEntity.ok(books);
     }
 
@@ -47,10 +47,11 @@ public class CartController {
         BigDecimal totalPrice = cartService.getTotalPrice();
         return ResponseEntity.ok(totalPrice);
     }
-
+    /*
     @PostMapping("/buy")
     public ResponseEntity<String> buy() {
         cartService.addToLibrary();
         return ResponseEntity.ok("success");
     }
+    */
 }

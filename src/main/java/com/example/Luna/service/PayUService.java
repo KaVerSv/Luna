@@ -75,14 +75,15 @@ public class PayUService {
         return sb.toString();
     }
 
-    public PayUResponse createPayment(PayURequest payURequest) {
+    public PayUResponse createPayment(PayURequest payURequest, Long orderId) {
         try {
             String accessToken = getAccessToken();
             System.out.println("Access Token: " + accessToken);
 
             // Prepare the order payload
             Map<String, Object> order = new HashMap<>();
-            order.put("notifyUrl", "http://localhost/confirm"); // URL do odbierania powiadomień o statusie
+            order.put("notifyUrl", "http://localhost:8080/orders/confirm"); // URL do odbierania powiadomień o statusie
+            order.put("continueUrl", "http://localhost:5173/confirm?id=" + orderId); //URL to check payment status after completion
             order.put("customerIp", "127.0.0.1"); // testing IP
             order.put("merchantPosId", clientId);
             order.put("description", "Opłata zamówienia");
@@ -100,9 +101,6 @@ public class PayUService {
             product.put("unitPrice", totalAmount);
             product.put("quantity", 1);
             order.put("products", List.of(product));
-
-            // redirectUri
-            order.put("redirectUri", "http://localhost/confirm"); // URL przekierowania po płatności
 
             // Convert the order to JSON
             String orderJson = objectMapper.writeValueAsString(order);
@@ -127,7 +125,6 @@ public class PayUService {
                 // Extract status as a LinkedHashMap and retrieve the statusCode string from it
                 Map<String, Object> statusMap = (Map<String, Object>) responseBody.get("status");
                 String status = (String) statusMap.get("statusCode");
-
                 return new PayUResponse(redirectUri, transactionId, status);
             } else {
                 throw new RuntimeException("Failed to create payment order with PayU. Status code: " + response.statusCode());
@@ -153,8 +150,9 @@ public class PayUService {
 
             if (response.statusCode() == HttpStatus.OK.value()) {
                 Map<String, Object> responseBody = objectMapper.readValue(response.body(), Map.class);
-                String status = (String) responseBody.get("status");
-                return "COMPLETED".equals(status);
+                Map<String, Object> status = (Map<String, Object>) responseBody.get("status");
+                String statusCode = (String) status.get("statusCode");
+                return "SUCCESS".equals(statusCode);
             } else {
                 throw new RuntimeException("Failed to verify payment with PayU");
             }

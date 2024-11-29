@@ -8,6 +8,7 @@ import com.example.Luna.api.model.OrderItem;
 import com.example.Luna.api.model.User;
 import com.example.Luna.repository.OrderRepository;
 import com.example.Luna.repository.UserRepository;
+import com.example.Luna.security.service.UserContextService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,16 +26,14 @@ public class OrderService {
     private final UserRepository userRepository;
     private final PayUService payUService;
     private final DiscountService discountService;
+    private final UserContextService userContextService;
+    private final CartService cartService;
 
     @Transactional
-    public String createOrderAndInitiatePayment(OrderRequestDto orderRequestDto, Long userId) {
-        // Fetch user, items and calculate total amount
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
-
-
-        //get books in user cart
+    public String createOrderAndInitiatePayment() {
+        User user = userContextService.getCurrentUser();
         Set<Book> books = user.getCart();
+
         //create Order
         Order order = new Order();
         order.setUser(user);
@@ -52,19 +51,21 @@ public class OrderService {
 
         //total amount in sub currency egz. cents
         int totalAmount = 0;
-        // Calculate the total amount from the basket items
+        // Calculate the total amount from the cart items
         for (OrderItem orderItem : order.getOrderItems()) {
             totalAmount += orderItem.getPriceAtPurchase().movePointRight(2).intValueExact();
         }
 
         //save order
         orderRepository.save(order);
-        //clear cart
-        user.getCart().clear();
 
         // Create a payment request to PayU
         PayURequest payURequest = new PayURequest(totalAmount, user.getEmail(), "Order payment");
-        PayUResponse payUResponse = payUService.createPayment(payURequest);
+        PayUResponse payUResponse = payUService.createPayment(payURequest, order.getId());
+
+        //save transactionId order
+        order.setPayUOrderId(payUResponse.getTransactionId());
+        orderRepository.save(order);
 
         // Return the PayU payment URL for frontend to redirect the user
         return payUResponse.getPaymentUrl();
@@ -88,6 +89,7 @@ public class OrderService {
 
         // Mark the order as paid
         order.setPaid(true);
+        cartService.addToLibraryAndClear(user);
         orderRepository.save(order);
     }
 
@@ -99,7 +101,6 @@ public class OrderService {
             Set<OrderItemDto> orderItemDtos = order.getOrderItems().stream().map(orderItem ->
                     new OrderItemDto(
                             orderItem.getId(),
-                            null, // Nie przypisujemy obiektu Order w DTO, aby uniknąć cyklicznej referencji
                             orderItem.getBook(),
                             orderItem.getDiscount(),
                             orderItem.getPriceAtPurchase()
@@ -112,9 +113,19 @@ public class OrderService {
                     order.getOrderDate(),
                     order.getUser(),
                     order.isPaid(),
+                    order.getPayUOrderId(),
                     orderItemDtos
             );
         }).collect(Collectors.toList());
     }
 
+    public OrderDto getOrderById(Long id) {
+        User user = userContextService.getCurrentUser();
+        Order order = orderRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Order not found"));
+        //ensure order belongs to user
+        if(!user.getOrders().contains(order))
+            throw new IllegalStateException("Order not found");
+
+        return new OrderDto(order);
+    }
 }

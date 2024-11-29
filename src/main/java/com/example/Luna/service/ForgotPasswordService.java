@@ -39,7 +39,7 @@ public class ForgotPasswordService {
         //get existing fp or create new
         ForgotPassword fp = forgotPasswordRepository.findByUser(user)
                 .orElse(ForgotPassword.builder()
-                        .otp(otpHashed)
+                        .otp(plainToken)
                         .expirationTime(new Date(System.currentTimeMillis() + 300000)) // 5 minutes valid
                         .user(user)
                         .failedAttempts(1) // first attempt
@@ -55,7 +55,7 @@ public class ForgotPasswordService {
             throw new RuntimeException("Account is temporarily locked due to too many failed attempts.");
         }
 
-        fp.setOtp(otpHashed);
+        fp.setOtp(plainToken);
         fp.setExpirationTime(new Date(System.currentTimeMillis() + 300000)); // 5 minutes
         fp.setFailedAttempts(fp.getFailedAttempts() + 1);
         forgotPasswordRepository.save(fp);

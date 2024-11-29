@@ -26,9 +26,4 @@ public class AuthenticationController {
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
         return ResponseEntity.ok(service.authenticate(request));
     }
-
-    @PostMapping("/verifyMail/{email}/{otp}")
-    public ResponseEntity<String> verifyMail(@PathVariable String email,@PathVariable String otp) {
-        return ResponseEntity.ok(service.verifyMail(email,otp));
-    }
 }

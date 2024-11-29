@@ -27,6 +27,9 @@ public class Order {
     @Column(name = "paid", nullable = false)
     private boolean paid = false;
 
+    @Column(name = "payU_order_id")
+    private String payUOrderId;
+
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<OrderItem> orderItems = new HashSet<>();
 
