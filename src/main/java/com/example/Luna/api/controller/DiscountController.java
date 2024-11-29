@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/discounts")
 @AllArgsConstructor
 public class DiscountController {
-    private DiscountService discountService;
+    private final DiscountService discountService;
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)

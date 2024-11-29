@@ -17,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 public class BookController {
 
-    private BookService bookService;
+    private final BookService bookService;
 
     //Build add book REST API
     @PostMapping

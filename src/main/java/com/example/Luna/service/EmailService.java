@@ -39,7 +39,15 @@ public class EmailService {
         }
     }
 
-
+    /*
+    * email template
+    *
+    * @param name = name of user
+    * @param link = url to frontend page
+    * @param message = text in email body
+    * @param title = title of email
+    * @return body of email ready to be sent
+     */
     private String buildEmail(String name, String link, String message, String title) {
         return "<div style=\"font-family:Helvetica,Arial,sans-serif;font-size:16px;margin:0;color:#0b0c0c\">\n" +
                 "\n" +

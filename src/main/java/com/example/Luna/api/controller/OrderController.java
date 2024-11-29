@@ -3,7 +3,6 @@ package com.example.Luna.api.controller;
 import com.example.Luna.api.dto.OrderDto;
 import com.example.Luna.api.model.User;
 import com.example.Luna.security.service.UserContextService;
-import com.example.Luna.service.CartService;
 import com.example.Luna.service.OrderService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +21,6 @@ public class OrderController {
 
     private final OrderService orderService;
     private final UserContextService userContextService;
-    private final CartService cartService;
 
     @PostMapping("/create")
     public ResponseEntity<?> createOrderAndInitiatePayment() {

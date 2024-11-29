@@ -82,7 +82,7 @@ public class PayUService {
 
             // Prepare the order payload
             Map<String, Object> order = new HashMap<>();
-            order.put("notifyUrl", "http://localhost:8080/orders/confirm"); // URL do odbierania powiadomień o statusie
+            order.put("notifyUrl", "http://localhost:8080/orders/confirm"); // URL for receiving status notifications
             order.put("continueUrl", "http://localhost:5173/confirm?id=" + orderId); //URL to check payment status after completion
             order.put("customerIp", "127.0.0.1"); // testing IP
             order.put("merchantPosId", clientId);

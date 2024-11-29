@@ -1,16 +1,11 @@
 package com.example.Luna.api.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
 
 @Setter
 @Getter
@@ -37,6 +32,5 @@ public class Review {
     @JoinColumn(name = "book_id", nullable = false)
     private Book book;
 
-    // Getters and setters
 }
 

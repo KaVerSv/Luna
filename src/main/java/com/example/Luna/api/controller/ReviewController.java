@@ -18,14 +18,12 @@ public class ReviewController {
 
     @GetMapping("recentReviews")
     public ResponseEntity<List<ReviewDTO>> getBookReviews(@RequestParam Long id) {
-
         List<ReviewDTO> reviews = reviewService.getRecentReviews(id);
         return new ResponseEntity<>(reviews, HttpStatus.OK);
     }
 
     @PostMapping()
     public ResponseEntity<ReviewDTO> postBookReview(@RequestParam String text, @RequestParam Boolean vote,@RequestParam Long bookId) {
-
         ReviewDTO review =  reviewService.addReview(text, vote, bookId);
         return new ResponseEntity<>(review, HttpStatus.OK);
     }

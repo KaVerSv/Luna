@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 public class CartController {
 
-    private CartService cartService;
+    private final CartService cartService;
 
     @GetMapping()
     public ResponseEntity<List<BookWithDiscountDto>> getUserCart() {
@@ -47,11 +47,5 @@ public class CartController {
         BigDecimal totalPrice = cartService.getTotalPrice();
         return ResponseEntity.ok(totalPrice);
     }
-    /*
-    @PostMapping("/buy")
-    public ResponseEntity<String> buy() {
-        cartService.addToLibrary();
-        return ResponseEntity.ok("success");
-    }
-    */
+
 }

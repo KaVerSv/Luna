@@ -36,7 +36,7 @@ public class OrderItem {
         if (discount != null) {
             BigDecimal discountMultiplier = BigDecimal.valueOf((100 - discount.getPercentage()) / 100.0);
             BigDecimal discountedPrice = book.getPrice().multiply(discountMultiplier);
-            // Zaokrąglanie do 2 miejsc po przecinku
+            // rounding to 2 digits
             return discountedPrice.setScale(2, RoundingMode.HALF_UP);
         }
         return book.getPrice();
