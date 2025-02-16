@@ -99,16 +99,18 @@ public class OrderService {
                 .orElseThrow(() -> new IllegalStateException("No orders for user"));
 
         return orders.stream().map(order -> {
-            Set<OrderItemDto> orderItemDtos = order.getOrderItems().stream().map(orderItem ->
-                    new OrderItemDto(
-                            orderItem.getId(),
-                            new BookDto(orderItem.getBook()),
-                            DiscountMapper.mapToDiscountDto(orderItem.getDiscount()),
-                            orderItem.getPriceAtPurchase()
-                    )
-            ).collect(Collectors.toSet());
+            Set<OrderItemDto> orderItemDtos = order.getOrderItems().stream().map(orderItem -> {
+                DiscountDto discountDto = orderItem.getDiscount() != null
+                        ? DiscountMapper.mapToDiscountDto(orderItem.getDiscount())
+                        : null;
+                return new OrderItemDto(
+                        orderItem.getId(),
+                        new BookDto(orderItem.getBook()),
+                        discountDto,
+                        orderItem.getPriceAtPurchase()
+                );
+            }).collect(Collectors.toSet());
 
-            // Tworzenie OrderDto z listą OrderItemDto
             return new OrderDto(
                     order.getId(),
                     order.getOrderDate(),

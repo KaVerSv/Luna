@@ -1,3 +1,44 @@
+spring:
+  application:
+    name: Luna
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+
+  datasource:
+    url: jdbc:postgresql://localhost:5433/db
+    username: docker
+    password: docker
+
+  profiles:
+    active: <dev>
+
+  threads:
+    virtual:
+      enabled: true
+
+  mail:
+    host: localhost
+    port: 1025
+    username:
+    password:
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+
+payu:
+  clientId: 486572
+  clientSecret: 959ab09e8366c73ef44017a157eb0b10
+
+
 server:
   error:
     include-message: always

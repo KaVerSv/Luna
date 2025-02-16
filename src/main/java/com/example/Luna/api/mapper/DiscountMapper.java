@@ -5,6 +5,9 @@ import com.example.Luna.api.model.Discount;
 
 public class DiscountMapper {
     public static DiscountDto mapToDiscountDto(Discount discount) {
+        if (discount == null) {
+            return null; // Możesz zwrócić null lub domyślny DiscountDto
+        }
         return new DiscountDto(
                 discount.getId(),
                 discount.getPercentage(),
@@ -14,13 +17,16 @@ public class DiscountMapper {
         );
     }
 
-    public static Discount mapToDiscount(DiscountDto discountdto) {
+    public static Discount mapToDiscount(DiscountDto discountDto) {
+        if (discountDto == null) {
+            return null; // Możesz zwrócić null lub domyślny Discount
+        }
         return new Discount(
-                discountdto.getId(),
-                discountdto.getPercentage(),
-                discountdto.getStartDate(),
-                discountdto.getEndDate(),
-                discountdto.getName()
+                discountDto.getId(),
+                discountDto.getPercentage(),
+                discountDto.getStartDate(),
+                discountDto.getEndDate(),
+                discountDto.getName()
         );
     }
 }
